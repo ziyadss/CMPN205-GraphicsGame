@@ -55,7 +55,7 @@ namespace our {
 
         //TODO: Delete the copy constructor and assignment operator
         ShaderProgram(const ShaderProgram&) = delete; 
-        ShaderProgram& ShaderProgram::operator = (const ShaderProgram&) = delete;
+        ShaderProgram& operator = (const ShaderProgram&) = delete;
         //Question: Why do we do this? Hint: Look at the deconstructor
     };
 
