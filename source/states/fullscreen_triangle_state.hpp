@@ -17,7 +17,8 @@ namespace glm
 class FullscreenTriangleState : public our::State
 {
     our::ShaderProgram program;
-    //TODO: Add a variable in which we will store the name (ID) for a vertex array
+    GLuint vertexArray;
+    //define variable to store vertex array
 
     // onInitialize() function is called once before the state starts
     void onInitialize() override
@@ -64,7 +65,9 @@ class FullscreenTriangleState : public our::State
             }
         }
 
-        //TODO: Create a vertex array
+        glGenVertexArrays(1, &vertexArray);
+        //call glGenVertexArrays generate a VA, takes as arguements: the number of VBOs (vertex array objects) names to generate (in this case 1)
+        //and an array to store the generated VBO names
 
         // We set the clear color to be black
         glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -75,13 +78,17 @@ class FullscreenTriangleState : public our::State
     {
         // At the start of frame we want to clear the screen. Otherwise we would still see the results from the previous frame.
         glClear(GL_COLOR_BUFFER_BIT);
-
-        //TODO: Draw a triangle using the vertex array and the program
+        glBindVertexArray(vertexArray);
+        //call glBindVertexArray which binds the VAO (vertex array object) and takes as parameter the name of the VAO 
+        glDrawArrays(GL_TRIANGLES,0,3);
+        //call glDrawArrays which specifices a primitive to render (first parameter), and takes as 2nd parameter the starting index in the array,
+        //and as a 3rd parameter the number of vertices to draw.
     }
 
-    // onDestroy() function is called once after the state ends
-    void onDestroy() override
-    {
-        //TODO: Delete the vertex Array
+    // onInitialize() function is called once after the state ends
+    void onDestroy() override {
+        glDeleteVertexArrays(1, &vertexArray);
+        //call glDeleteVertexArrays which deletes the VAOs in the array referred to. takes as 1st parameter the number of VAOs to be deleted, and as 2nd
+        //the address containing them 
     }
 };
