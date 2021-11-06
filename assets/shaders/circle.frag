@@ -13,6 +13,6 @@ void main()
     const vec2 vector = gl_FragCoord.xy - center;
     const float euclideanDistance = length(vector);
 
-    // If distance is less than or equal to radius, set color to inside color
+    // If euclidean distance is less than or equal to radius, set color to inside color
     frag_color = (euclideanDistance <= radius) ? inside_color : outside_color;
 }
