@@ -79,16 +79,17 @@ class FullscreenTriangleState : public our::State
         // At the start of frame we want to clear the screen. Otherwise we would still see the results from the previous frame.
         glClear(GL_COLOR_BUFFER_BIT);
         glBindVertexArray(vertexArray);
-        //call glBindVertexArray which binds the VAO (vertex array object) and takes as parameter the name of the VAO 
-        glDrawArrays(GL_TRIANGLES,0,3);
+        //call glBindVertexArray which binds the VAO (vertex array object) and takes as parameter the name of the VAO
+        glDrawArrays(GL_TRIANGLES, 0, 3);
         //call glDrawArrays which specifices a primitive to render (first parameter), and takes as 2nd parameter the starting index in the array,
         //and as a 3rd parameter the number of vertices to draw.
     }
 
-    // onInitialize() function is called once after the state ends
-    void onDestroy() override {
+    // onDestroy() function is called once after the state ends
+    void onDestroy() override
+    {
         glDeleteVertexArrays(1, &vertexArray);
         //call glDeleteVertexArrays which deletes the VAOs in the array referred to. takes as 1st parameter the number of VAOs to be deleted, and as 2nd
-        //the address containing them 
+        //the address containing them
     }
 };

@@ -11,12 +11,11 @@ uniform vec4 outside_color = vec4(0.0, 0.0, 0.0, 1.0);
 
 void main()
 {
-    //TODO: Write code that will draw the square
-    float x=gl_FragCoord.x;
-    float y=gl_FragCoord.y;
-    float x_c=center.x;
-    float y_c=center.y;
-    if (max(abs(x-x_c),abs(y-y_c))<=0.5*side_length){
+    float x = gl_FragCoord.x;
+    float y = gl_FragCoord.y;
+    float x_c = center.x;
+    float y_c = center.y;
+    if (max(abs(x - x_c), abs(y - y_c)) <= 0.5 * side_length){
         frag_color = inside_color;
     } else {
         frag_color = outside_color;
