@@ -1,6 +1,7 @@
 # CMPN205 Project - Phase 1 Instructions
 
 The goals of phase 1 of the graphics project is:
+
 - Learn how to open a window and load OpenGL.
 - Learn how a graphics project can be organized as a set of states.
 - Learn how to write GLSL shaders.
@@ -11,12 +12,14 @@ The goals of phase 1 of the graphics project is:
 ## Code Structure
 
 The code is divided into 2 folders:
+
 - **source**: where we store all of our code including our `main.cpp`. Here, we further divide our code into 2 subfolders:
-    * **common**: where we put all the code that will be used by different states.
-    * **states**: which contains the different state classes.
+  - **common**: where we put all the code that will be used by different states.
+  - **states**: which contains the different state classes.
 - **vendor**: which contains the libraries we need for the project.
- 
+
 The `main.cpp` contains the main function which do the following:
+
 1. Parse the command line arguments.
 2. Reads the application configuration.
 3. Creates an Application object.
@@ -24,6 +27,7 @@ The `main.cpp` contains the main function which do the following:
 5. Call the application `run` function.
 
 Inside `application::run()`, the following steps are executed:
+
 1. Setup GLFW error callback and initialize GLFW.
 2. Configure OpenGL options.
 3. Create a window and make it the current context.
@@ -41,16 +45,18 @@ Inside `application::run()`, the following steps are executed:
    6. Swap buffers.
    7. Update the keyboard and mouse objects.
    8. Change the state if requested.
-10. Destory the state and other resources then exit. 
+10. Destory the state and other resources then exit.
 
 In every `state`, there are three important overrideable functions:
+
 - `onInitialize()` is called once when enter the state.
 - `onDraw(double deltaTime)` is called every frame where we should update and draw our scene. `deltaTime` contains the time difference between the current and the last frame.
 - `onDestroy()` is called once when exit the state.
 
 Other than these three functions, states have the following less important yet useful overrideable functions:
+
 - `onImmediateGui()` where we draw our GUI if needed.
-- `onKeyEvent(int key, int scancode, int action, int mods)` which runs whenever any event related to the keyboard occurs.      
+- `onKeyEvent(int key, int scancode, int action, int mods)` which runs whenever any event related to the keyboard occurs.
 - `onCursorMoveEvent(double x, double y)` which runs whenever the mouse moves inside the window.
 - `onCursorEnterEvent(int entered)` which runs whenever the mouse enters or leaves the window.
 - `onMouseButtonEvent(int button, int action, int mods)` which runs whenever any event related to the mouse buttons occurs.
@@ -101,6 +107,7 @@ In the file `"source\states\clear_color_state.hpp"`, you will need to modify the
 ### Shader Class and Fullscreen Triangle State
 
 This part has 3 related files:
+
 - The first two files are the `"source/common/shader/shader.hpp"` and `"source/common/shader/shader.cpp"`. You will find multiple functions that you will need to complete. These functions are used in `"source\states\fullscreen_triangle_state.hpp"` so you can look there to see how they will be used.
 - The third file is `"source\states\fullscreen_triangle_state.hpp"` which selects the shaders to load based on the configuration file and also sets the uniforms based from the configuration. However, the file is missing the code to draw the fullscreen triangle to the screen which you should add in.
 
@@ -111,8 +118,8 @@ After the the 3 files are done, you should see the split into 2 parts where the 
 Currently, the 4 fragment shaders draw the same thing. We will need each of them to draw a different shape. All the shaders receive two color uniforms: `inside_color` and `outside_color` which define the color inside and outside the shape respectively. The shapes are:
 
 - **Circle**: where a point is considered inside the shape if the euclidean distance between the current fragment and the circle's center is less than or equal the radius. The euclidean distance is measured as: $\sqrt{(x-x_c)^2 + (y-y_c)^2}$. The shader should receive 2 more uniforms:
-  - *radius*: which defines the radius of the circle in pixels.
-  - *center*: which defines the center of the circle in pixels.
+  - _radius_: which defines the radius of the circle in pixels.
+  - _center_: which defines the center of the circle in pixels.
 
 <p align="center">
 <img src="expected/circle01.png" alt="circle" width="128"/>
@@ -121,9 +128,9 @@ Currently, the 4 fragment shaders draw the same thing. We will need each of them
 <code>center = (256, 256), radius = 128</code>
 </p>
 
-- **Square**: where a point is considered inside the shape if the infinity norm distance between the current fragment and the circle's center is less than or equal half the side length (width and height). The infinity norm distance is measured as: $\max(|x-x_c|, |y-y_c|)$. The shader should receive 2 more uniforms:
-  - *side-length*: which defines the width and height of the square in pixels.
-  - *center*: which defines the center of the square in pixels.
+- **Square**: where a point is considered inside the shape if the infinity norm distance between the current fragment and the squares's center is less than or equal half the side length (width and height). The infinity norm distance is measured as: $\max(|x-x_c|, |y-y_c|)$. The shader should receive 2 more uniforms:
+  - _side-length_: which defines the width and height of the square in pixels.
+  - _center_: which defines the center of the square in pixels.
 
 <p align="center">
 <img src="expected/square01.png" alt="square" width="128"/>
@@ -132,9 +139,9 @@ Currently, the 4 fragment shaders draw the same thing. We will need each of them
 <code>center = (256, 256), side_length = 128</code>
 </p>
 
-- **Diamond**: where a point is considered inside the shape if the manhattan distance between the current fragment and the circle's center is less than or equal half the side length (width and height). The manhattan distance is measured as: $|x-x_c| + |y-y_c|$. The shader should receive 2 more uniforms:
-  - *side-length*: which defines the width and height of the diamond in pixels.
-  - *center*: which defines the center of the diamond in pixels.
+- **Diamond**: where a point is considered inside the shape if the manhattan distance between the current fragment and the diamond's center is less than or equal half the side length (width and height). The manhattan distance is measured as: $|x-x_c| + |y-y_c|$. The shader should receive 2 more uniforms:
+  - _side-length_: which defines the width and height of the diamond in pixels.
+  - _center_: which defines the center of the diamond in pixels.
 
 <p align="center">
 <img src="expected/diamond01.png" alt="diamond" width="128"/>
@@ -144,8 +151,8 @@ Currently, the 4 fragment shaders draw the same thing. We will need each of them
 </p>
 
 - **line**: where a point is considered inside the shape it satisfies the condition $y \leq ax + b$ where a is the "slope" and b is the "intercept". The shader should receive 2 more uniforms:
-  - *slope*: which defines the slope of the separating line.
-  - *intercept*: which defines the intercept of the separating line in pixels.
+  - _slope_: which defines the slope of the separating line.
+  - _intercept_: which defines the intercept of the separating line in pixels.
 
 <p align="center">
 <img src="expected/line01.png" alt="line" width="128"/>
@@ -178,12 +185,12 @@ The delivered files will be automatically scanned for plagiarism detection. Any 
 
 ## Useful Resources
 
-* Tutorials
-    * [Learn OpenGL](https://learnopengl.com/)
-    * [Open.GL](https://open.gl/introduction)
-    * [OpenGL-Tutorial](http://www.opengl-tutorial.org/)
-    * [The Book of Shaders](https://thebookofshaders.com/)
-* References
-    * [OpenGL Wiki](https://www.khronos.org/opengl/wiki/)
-    * [OpenGL Reference](https://www.khronos.org/registry/OpenGL-Refpages/gl4/)
-    * [docs.GL](https://docs.gl/)
+- Tutorials
+  - [Learn OpenGL](https://learnopengl.com/)
+  - [Open.GL](https://open.gl/introduction)
+  - [OpenGL-Tutorial](http://www.opengl-tutorial.org/)
+  - [The Book of Shaders](https://thebookofshaders.com/)
+- References
+  - [OpenGL Wiki](https://www.khronos.org/opengl/wiki/)
+  - [OpenGL Reference](https://www.khronos.org/registry/OpenGL-Refpages/gl4/)
+  - [docs.GL](https://docs.gl/)
