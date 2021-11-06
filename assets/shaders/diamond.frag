@@ -2,7 +2,7 @@
 
 out vec4 frag_color;
 
-uniform vec2 center = vec(256, 256);
+uniform vec2 center = vec2(256, 256);
 uniform float sideLength = 128;
 
 uniform vec4 inside_color = vec4(1.0, 0.0, 0.0, 1.0);
