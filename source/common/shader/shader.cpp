@@ -19,7 +19,7 @@ void our::ShaderProgram::destroy()
     program = 0;
 }
 
-//Forward definition for error checking functions
+// Forward definition for error checking functions
 std::string checkForShaderCompilationErrors(GLuint shader);
 std::string checkForLinkingErrors(GLuint program);
 
@@ -32,6 +32,7 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
         std::cerr << "ERROR: Couldn't open shader file: " << filename << std::endl;
         return false;
     }
+
     std::string sourceString = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
     const char *sourceCStr = sourceString.c_str();
     file.close();
