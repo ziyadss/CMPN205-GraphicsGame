@@ -10,6 +10,7 @@
 
 namespace our
 {
+  
     class ShaderProgram
     {
     private:
@@ -31,12 +32,13 @@ namespace our
         void use()
         {
             //TODO: call opengl to use the program identified by this->program
+
             glUseProgram(program);
         }
 
         GLuint getUniformLocation(const std::string &name)
         {
-            //TODO: call opengl to get the uniform location for the uniform defined by name from this->program
+
             //check if uniform location is already stored in cache (no need to use openGl everytime)
             if (UniformLocationCache.find(name)!=UniformLocationCache.end())
             {
@@ -51,19 +53,25 @@ namespace our
         void set(const std::string &uniform, GLfloat value)
         {
             //TODO: call opengl to set the value to the uniform defined by name
+
             glUniform1f(getUniformLocation(uniform),value);
+
         }
 
         void set(const std::string &uniform, glm::vec2 value)
         {
             //TODO: call opengl to set the value to the uniform defined by name
+
             glUniform2f(getUniformLocation(uniform),value.x,value.y);
+
         }
 
         void set(const std::string &uniform, glm::vec3 value)
         {
             //TODO: call opengl to set the value to the uniform defined by name
+
             glUniform3f(getUniformLocation(uniform),value.x,value.y,value.z);
+
         }
 
         void set(const std::string &uniform, glm::vec4 value)
@@ -79,6 +87,7 @@ namespace our
         //the underlying opengl object is destroyed in deconstructor and if object is copied and one of them 
         //destroys it it will lead to an error if the other tries to still acess it.
         //so we need to bind resource acquisition and release by the timelife of an object 
+
     };
 
 }

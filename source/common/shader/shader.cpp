@@ -7,16 +7,15 @@
 
 void our::ShaderProgram::create()
 {
-    // Create Shader Program
+    //Create Shader Program
     program = glCreateProgram();
 }
 
 void our::ShaderProgram::destroy()
 {
-    // Delete Shader Program
+    //Delete Shader Program
     if (program != 0)
         glDeleteProgram(program);
-        
     program = 0;
 }
 
@@ -41,33 +40,36 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
     GLuint shaderID = glCreateShader(type);
 
     //TODO: send the source code to the shader and compile it
-
+    glShaderSource(shaderID,1 ,&sourceCStr, nullptr);
+    glCompileShader(shaderID);
     // Here we check for compilation errors
     //TODO: Uncomment this if block
-    // if(std::string error = checkForShaderCompilationErrors(shaderID); error.size() != 0){
-    //     std::cerr << "ERROR IN " << filename << std::endl;
-    //     std::cerr << error << std::endl;
-    //     glDeleteShader(shaderID);
-    //     return false;
-    // }
+    if(std::string error = checkForShaderCompilationErrors(shaderID); error.size() != 0){
+        std::cerr << "ERROR IN " << filename << std::endl;
+        std::cerr << error << std::endl;
+        glDeleteShader(shaderID);
+        return false;
+    }
 
     //TODO: attach the shader to the program then delete the shader
-
-    // We return true since the compilation succeeded
+    glAttachShader(this->program,shaderID);
+    glDeleteShader(shaderID);
+    //We return true since the compilation succeeded
     return true;
 }
 
-bool our::ShaderProgram::link() const
-{
-    //TODO: call opengl to link the program identified by this->program
 
+
+bool our::ShaderProgram::link() const {
+    //TODO: call opengl to link the program identified by this->program 
+    glLinkProgram(this->program);
     // Here we check for linking errors
-    //TODO: Uncomment this if block
-    // if(auto error = checkForLinkingErrors(program); error.size() != 0){
-    //     std::cerr << "LINKING ERROR" << std::endl;
-    //     std::cerr << error << std::endl;
-    //     return false;
-    // }
+    // TODO: Uncomment this if block
+    if(auto error = checkForLinkingErrors(program); error.size() != 0){
+        std::cerr << "LINKING ERROR" << std::endl;
+        std::cerr << error << std::endl;
+        return false;
+    }
 
     return true;
 }
@@ -78,7 +80,7 @@ bool our::ShaderProgram::link() const
 
 std::string checkForShaderCompilationErrors(GLuint shader)
 {
-    // Check and return any error in the compilation process
+    //Check and return any error in the compilation process
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if (!status)
@@ -96,7 +98,7 @@ std::string checkForShaderCompilationErrors(GLuint shader)
 
 std::string checkForLinkingErrors(GLuint program)
 {
-    // Check and return any error in the linking process
+    //Check and return any error in the linking process
     GLint status;
     glGetProgramiv(program, GL_LINK_STATUS, &status);
     if (!status)
