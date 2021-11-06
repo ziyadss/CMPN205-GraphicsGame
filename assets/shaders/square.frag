@@ -9,9 +9,8 @@ uniform vec4 outside_color = vec4(0.0, 0.0, 0.0, 1.0);
 
 void main(){
     //TODO: Write code that will draw the square
-    if(gl_FragCoord.x <= 256){
+    if (gl_FragCoord.x <= 256)
         frag_color = inside_color;
-    } else {
+    else
         frag_color = outside_color;
-    }
 }

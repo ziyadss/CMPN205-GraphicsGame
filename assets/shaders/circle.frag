@@ -2,16 +2,17 @@
 
 out vec4 frag_color;
 
-//TODO: Define uniforms for the center and the radius
+uniform vec2 center = vec2(256, 256);
+uniform float radius = 128;
 
 uniform vec4 inside_color = vec4(1.0, 0.0, 0.0, 1.0);
 uniform vec4 outside_color = vec4(0.0, 0.0, 0.0, 1.0);
 
-void main(){
-    //TODO: Write code that will draw the circle
-    if(gl_FragCoord.x <= 256){
-        frag_color = inside_color;
-    } else {
-        frag_color = outside_color;
-    }
+void main()
+{
+    vec2 vector = gl_FragCoord.xy - center;
+    float euclideanDistance = length(vector);
+
+    // If euclidean distance is less than or equal to radius, set color to inside color
+    frag_color = (euclideanDistance <= radius) ? inside_color : outside_color;
 }

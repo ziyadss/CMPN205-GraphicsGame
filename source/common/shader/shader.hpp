@@ -9,12 +9,11 @@
 
 namespace our
 {
-
+  
     class ShaderProgram
     {
-
     private:
-        //Shader Program Handle
+        // Shader Program Handle
         GLuint program;
 
     public:
