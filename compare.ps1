@@ -23,7 +23,7 @@ $success = 0
 
 foreach ($file in $files) {
     Write-Output "Testing $file ..."
-    & "./imgcmp" "$expected$file" "$output$file" -o "$errors$file"
+    & "./imgcmp" "$expected$file" "$output$file" -o "$errors$file" -t 0.01
     if($LASTEXITCODE -eq 0){
         $success += 1
     }
