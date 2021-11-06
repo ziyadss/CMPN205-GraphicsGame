@@ -128,7 +128,7 @@ Currently, the 4 fragment shaders draw the same thing. We will need each of them
 <code>center = (256, 256), radius = 128</code>
 </p>
 
-- **Square**: where a point is considered inside the shape if the infinity norm distance between the current fragment and the circle's center is less than or equal half the side length (width and height). The infinity norm distance is measured as: $\max(|x-x_c|, |y-y_c|)$. The shader should receive 2 more uniforms:
+- **Square**: where a point is considered inside the shape if the infinity norm distance between the current fragment and the squares's center is less than or equal half the side length (width and height). The infinity norm distance is measured as: $\max(|x-x_c|, |y-y_c|)$. The shader should receive 2 more uniforms:
   - _side-length_: which defines the width and height of the square in pixels.
   - _center_: which defines the center of the square in pixels.
 
@@ -139,7 +139,7 @@ Currently, the 4 fragment shaders draw the same thing. We will need each of them
 <code>center = (256, 256), side_length = 128</code>
 </p>
 
-- **Diamond**: where a point is considered inside the shape if the manhattan distance between the current fragment and the circle's center is less than or equal half the side length (width and height). The manhattan distance is measured as: $|x-x_c| + |y-y_c|$. The shader should receive 2 more uniforms:
+- **Diamond**: where a point is considered inside the shape if the manhattan distance between the current fragment and the diamond's center is less than or equal half the side length (width and height). The manhattan distance is measured as: $|x-x_c| + |y-y_c|$. The shader should receive 2 more uniforms:
   - _side-length_: which defines the width and height of the diamond in pixels.
   - _center_: which defines the center of the diamond in pixels.
 
