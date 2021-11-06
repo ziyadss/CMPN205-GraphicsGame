@@ -1,6 +1,7 @@
 #version 330 core
 
-void main(){
+void main()
+{
     const vec3 TRIANGLE[3] = vec3[3](
         vec3(-1.0, -1.0, 0.0),
         vec3( 3.0, -1.0, 0.0),

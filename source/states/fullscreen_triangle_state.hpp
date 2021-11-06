@@ -39,7 +39,7 @@ class FullscreenTriangleState : public our::State
 
         // We call use() since we will send uniforms to this program
         program.use();
-        
+
         // We loop over every uniform in the configuration and send to the program
         if (const auto &uniforms = config["uniforms"]; uniforms.is_object())
         {
