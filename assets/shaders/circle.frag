@@ -10,8 +10,8 @@ uniform vec4 outside_color = vec4(0.0, 0.0, 0.0, 1.0);
 
 void main()
 {
-    const vec2 vector = gl_FragCoord.xy - center;
-    const float euclideanDistance = length(vector);
+    vec2 vector = gl_FragCoord.xy - center;
+    float euclideanDistance = length(vector);
 
     // If euclidean distance is less than or equal to radius, set color to inside color
     frag_color = (euclideanDistance <= radius) ? inside_color : outside_color;
