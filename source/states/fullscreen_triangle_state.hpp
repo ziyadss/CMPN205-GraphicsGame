@@ -16,7 +16,6 @@ namespace glm
 
 class FullscreenTriangleState : public our::State
 {
-
     our::ShaderProgram program;
     //TODO: Add a variable in which we will store the name (ID) for a vertex array
 
@@ -40,6 +39,7 @@ class FullscreenTriangleState : public our::State
 
         // We call use() since we will send uniforms to this program
         program.use();
+        
         // We loop over every uniform in the configuration and send to the program
         if (const auto &uniforms = config["uniforms"]; uniforms.is_object())
         {
@@ -73,13 +73,13 @@ class FullscreenTriangleState : public our::State
     // onDraw(deltaTime) function is called every frame
     void onDraw(double deltaTime) override
     {
-        //At the start of frame we want to clear the screen. Otherwise we would still see the results from the previous frame.
+        // At the start of frame we want to clear the screen. Otherwise we would still see the results from the previous frame.
         glClear(GL_COLOR_BUFFER_BIT);
 
         //TODO: Draw a triangle using the vertex array and the program
     }
 
-    // onInitialize() function is called once after the state ends
+    // onDestroy() function is called once after the state ends
     void onDestroy() override
     {
         //TODO: Delete the vertex Array

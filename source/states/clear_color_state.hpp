@@ -20,7 +20,7 @@ class ClearColorState : public our::State
     // onDraw(deltaTime) function is called every frame
     void onDraw(double deltaTime) override
     {
-        //At the start of frame we want to clear the screen. Otherwise we would still see the results from the previous frame.
+        // At the start of frame we want to clear the screen. Otherwise we would still see the results from the previous frame.
         glClear(GL_COLOR_BUFFER_BIT);
     }
 };

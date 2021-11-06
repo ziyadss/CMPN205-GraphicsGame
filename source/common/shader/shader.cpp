@@ -7,19 +7,20 @@
 
 void our::ShaderProgram::create()
 {
-    //Create Shader Program
+    // Create Shader Program
     program = glCreateProgram();
 }
 
 void our::ShaderProgram::destroy()
 {
-    //Delete Shader Program
+    // Delete Shader Program
     if (program != 0)
         glDeleteProgram(program);
+        
     program = 0;
 }
 
-//Forward definition for error checking functions
+// Forward definition for error checking functions
 std::string checkForShaderCompilationErrors(GLuint shader);
 std::string checkForLinkingErrors(GLuint program);
 
@@ -32,6 +33,7 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
         std::cerr << "ERROR: Couldn't open shader file: " << filename << std::endl;
         return false;
     }
+
     std::string sourceString = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
     const char *sourceCStr = sourceString.c_str();
     file.close();
@@ -51,7 +53,7 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
 
     //TODO: attach the shader to the program then delete the shader
 
-    //We return true since the compilation succeeded
+    // We return true since the compilation succeeded
     return true;
 }
 
@@ -76,7 +78,7 @@ bool our::ShaderProgram::link() const
 
 std::string checkForShaderCompilationErrors(GLuint shader)
 {
-    //Check and return any error in the compilation process
+    // Check and return any error in the compilation process
     GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
     if (!status)
@@ -94,7 +96,7 @@ std::string checkForShaderCompilationErrors(GLuint shader)
 
 std::string checkForLinkingErrors(GLuint program)
 {
-    //Check and return any error in the linking process
+    // Check and return any error in the linking process
     GLint status;
     glGetProgramiv(program, GL_LINK_STATUS, &status);
     if (!status)
