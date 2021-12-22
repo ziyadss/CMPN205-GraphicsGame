@@ -3,9 +3,10 @@
 
 #include <string>
 
-namespace our {
+namespace our
+{
 
-    bool screenshot_png(const std::string& filename, bool include_alpha = false);
+    bool screenshot_png(const std::string &filename, bool include_alpha = false);
 
 }
 

@@ -2,7 +2,8 @@
 
 #include "mesh.hpp"
 
-namespace our::mesh_utils {
+namespace our::mesh_utils
+{
     // Load an ".obj" file into the mesh
-    Mesh* loadOBJ(const char* filename);
+    Mesh *loadOBJ(const char *filename);
 }

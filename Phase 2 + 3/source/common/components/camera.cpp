@@ -1,18 +1,21 @@
 #include "camera.hpp"
 #include "../ecs/entity.hpp"
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp> 
+#include <glm/gtc/matrix_transform.hpp>
 
-namespace our {
+namespace our
+{
     // Reads camera parameters from the given json object
-    void CameraComponent::deserialize(const nlohmann::json& data){
-        if(!data.is_object()) return;
+    void CameraComponent::deserialize(const nlohmann::json &data)
+    {
+        if (!data.is_object())
+            return;
         std::string cameraTypeStr = data.value("cameraType", "perspective");
-        if(cameraTypeStr == "orthographic"){
+        if (cameraTypeStr == "orthographic")
             cameraType = CameraType::ORTHOGRAPHIC;
-        } else {
+        else
             cameraType = CameraType::PERSPECTIVE;
-        }
+
         near = data.value("near", 0.01f);
         far = data.value("far", 100.0f);
         fovY = data.value("fovY", 90.0f) * (glm::pi<float>() / 180);
@@ -20,7 +23,8 @@ namespace our {
     }
 
     // Creates and returns the camera view matrix
-    glm::mat4 CameraComponent::getViewMatrix() const {
+    glm::mat4 CameraComponent::getViewMatrix() const
+    {
         auto owner = getOwner();
         auto M = owner->getLocalToWorldMatrix();
         //TODO: Complete this function
@@ -40,7 +44,8 @@ namespace our {
 
     // Creates and returns the camera projection matrix
     // "viewportSize" is used to compute the aspect ratio
-    glm::mat4 CameraComponent::getProjectionMatrix(glm::ivec2 viewportSize) const {
+    glm::mat4 CameraComponent::getProjectionMatrix(glm::ivec2 viewportSize) const
+    {
         //TODO: Wrtie this function
         // NOTE: The function glm::ortho can be used to create the orthographic projection matrix
         // It takes left, right, bottom, top. Bottom is -orthoHeight/2 and Top is orthoHeight/2.
