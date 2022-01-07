@@ -42,25 +42,24 @@ float lambert(vec3 n, vec3 l)
 
 float phong(vec3 n, vec3 l, vec3 v, float shininess){
     vec3 r = reflect(-l, n);
-    return pow(max(0, dov(v, r)), shininess);
+    return pow(max(0, dot(v, r)), shininess);
 }
 
-vec3 compute_sky_light(vec3 normal, SkyLight, sky_light){
+vec3 compute_sky_light(vec3 normal, SkyLight sky_light){
         float y = normal.y;
         float sky_factor = max(0, y);
         float ground_factor = max(0, -y);
         sky_factor *= sky_factor;
         ground_factor *= ground_factor;
-        float horizon_factor = 1 - sky_factor - ground.factor;
-        return sky_light>sky * sky_factor + sky_light.horizon * horizon_factor + sky_light.ground * ground_factor;
+        float horizon_factor = 1 - sky_factor - ground_factor;
+        return sky_light.sky * sky_factor + sky_light.horizon * horizon_factor + sky_light.ground * ground_factor;
 }
 
-
+uniform int MAX_LIGHTS;
 uniform Material material;
 uniform int light_count;
 uniform Light lights[MAX_LIGHTS];
 uniform SkyLight sky_light;
-uniform MAX_LIGHTS;
 
 void main(){
     vec3 normal = normalize(fs_in.normal);
@@ -78,7 +77,7 @@ void main(){
     for (int i = 0; i < min(MAX_LIGHTS, light_count); ++i){
         Light light = lights[i];
 
-        vec3 light.vec = -light.direction;
+        vec3 light_vec = -light.direction;
         if(light.type != DIRECTIONAL){
             light_vec = normalize(light.position - fs_in.world);
         }
