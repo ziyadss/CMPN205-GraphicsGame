@@ -55,7 +55,9 @@ vec3 compute_sky_light(vec3 normal, SkyLight sky_light){
         return sky_light.sky * sky_factor + sky_light.horizon * horizon_factor + sky_light.ground * ground_factor;
 }
 
-uniform int MAX_LIGHTS;
+// uniform int MAX_LIGHTS;
+#define MAX_LIGHTS 8
+
 uniform Material material;
 uniform int light_count;
 uniform Light lights[MAX_LIGHTS];
