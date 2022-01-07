@@ -19,8 +19,8 @@ namespace our
         attenuation.constant = data.value("attenuation.constant", 0.0f);
         attenuation.linear = data.value("attenuation.linear", 0.0f);
         attenuation.quadratic = data.value("attenuation.quadratic", 1.0f);
-        spot_angle.inner = data.value("spot_angle.outer", 90.0f) * glm::pi<float>() / 180.0f;
-        spot_angle.outer = data.value("spot_angle.outer", 180.0f) * glm::pi<float>() / 180.0f;
+        spot_angle.inner = glm::radians(data.value("spot_angle.inner", 90.0f));
+        spot_angle.outer = glm::radians(data.value("spot_angle.outer", 180.0f));
     }
 
     glm::mat4 LightComponent::getLocalToWorldMatrix() const
@@ -33,6 +33,5 @@ namespace our
         glm::mat4 M = getLocalToWorldMatrix();
         return glm::inverse(glm::transpose(M));
     }
-
 
 }
