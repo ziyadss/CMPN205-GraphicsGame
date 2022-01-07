@@ -9,7 +9,7 @@ in Varyings {
     vec3 normal;
     vec3 view;
     vec3 world;
-    vec3 tex_coord;
+    vec2 tex_coord;
 } fs_in;
 
 out vec4 frag_color;
