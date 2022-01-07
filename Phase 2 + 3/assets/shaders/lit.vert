@@ -9,7 +9,7 @@ out Varyings{
     vec3 view;
     vec3 world;
     vec2 tex_coord;
-};
+} vs_out;
 
 uniform mat4 M;
 uniform mat4 M_IT;
