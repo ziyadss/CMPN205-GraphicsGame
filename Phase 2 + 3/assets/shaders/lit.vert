@@ -12,12 +12,16 @@ layout(location = 2) in vec2 tex_coord;
 */
 out Varyings{
     vec4 color;
-    vec2 tex_coord; 
+    vec2 tex_coord;
+
+    vec3 normal; 
 } vs_out;
 
-uniform mat4 transform;
+uniform mat4 transform; //this is the position of the light source
+//view vector is known (0,0,-1)
+uniform LightComponent light;
 void main(){
-
+    
     gl_Position = transform * vec4(position, 1.0);
     vs_out.color = color; 
     vs_out.tex_coord = tex_coord; 

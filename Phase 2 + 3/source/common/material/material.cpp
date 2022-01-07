@@ -87,6 +87,9 @@ namespace our
         specular = data.value("specular", glm::vec3(0.0f, 0.0f, 0.0f));
         ambient = data.value("ambient", glm::vec3(0.0f, 0.0f, 0.0f));
         shininess = data.value("shininess", 1.0f);
+        roughness = data.value("roughness", 0.0f);
+        ambient_occlusion = data.value("ambient_occlusion", 0.0f);
+        emission = data.value("emission", 0.0f);
     }
 
 }

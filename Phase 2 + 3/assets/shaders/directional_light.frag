@@ -8,7 +8,8 @@ in Varyings{
    vec3 normal;
 }
 fsin;
-
+//this should be a uniform lightComponent
+//and this should have a uniform for {position, direction} 
 struct DirectionalLight{
     vec3 diffuse;
     vec3 specular;
@@ -19,6 +20,9 @@ struct DirectionalLight{
 //TO DO: FIX NORMALS AND VIEW 
 uniform Material material;
 uniform DirectionalLight light;
+
+uniform vec3 direction;
+uniform vec3 position;
 
 out vec4 frag_color;
 

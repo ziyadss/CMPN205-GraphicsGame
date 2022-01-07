@@ -6,14 +6,14 @@
 in varyings{
     vec4 color;
     vec2 tex_coord;
-    ///////
+    ///////WARNING
     vec3 normal;
     vec3 view;
 } fsin;
 
 
 uniform Material material;
-uniform LightType light;
+uniform LightComponent light;
 
 out vec4 frag_color;
 
