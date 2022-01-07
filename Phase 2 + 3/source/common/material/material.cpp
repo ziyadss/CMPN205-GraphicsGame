@@ -70,10 +70,32 @@ namespace our
     // set the "diffuse", "specular" and "ambient" uniforms to the value in the member variables
     void LitMaterial::setup() const
     {
-        Material::setup();
-        shader->set("diffuse", diffuse);
-        shader->set("specular", specular);
-        shader->set("ambient", ambient);
+        TexturedMaterial::setup();
+
+        glActiveTexture(GL_TEXTURE1);
+        albedo->bind();
+        sampler->bind(1);
+        shader->set("material.albedo", 1);
+
+        glActiveTexture(GL_TEXTURE2);
+        specular->bind();
+        sampler->bind(2);
+        shader->set("material.specular", 2);
+
+        glActiveTexture(GL_TEXTURE3);
+        roughness->bind();
+        sampler->bind(3);
+        shader->set("material.roughness", 3);
+
+        glActiveTexture(GL_TEXTURE4);
+        ambient_occlusion->bind();
+        sampler->bind(4);
+        shader->set("material.ambient_occlusion", 4);
+
+        glActiveTexture(GL_TEXTURE5);
+        emission->bind();
+        sampler->bind(5);
+        shader->set("material.emission", 5);
     }
 
     // This function read the material data from a json object
@@ -82,14 +104,11 @@ namespace our
         Material::deserialize(data);
         if (!data.is_object())
             return;
-
-        diffuse = data.value("diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
-        specular = data.value("specular", glm::vec3(0.0f, 0.0f, 0.0f));
-        ambient = data.value("ambient", glm::vec3(0.0f, 0.0f, 0.0f));
-        shininess = data.value("shininess", 1.0f);
-        roughness = data.value("roughness", 0.0f);
-        ambient_occlusion = data.value("ambient_occlusion", 0.0f);
-        emission = data.value("emission", 0.0f);
+        albedo = AssetLoader<Texture2D>::get(data.value("albedo", ""));
+        specular = AssetLoader<Texture2D>::get(data.value("specular", ""));
+        roughness = AssetLoader<Texture2D>::get(data.value("roughness", ""));
+        ambient_occlusion = AssetLoader<Texture2D>::get(data.value("ambient_occlusion", ""));
+        emission = AssetLoader<Texture2D>::get(data.value("emission", ""));
     }
 
 }

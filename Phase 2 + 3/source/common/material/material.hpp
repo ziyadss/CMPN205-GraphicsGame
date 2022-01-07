@@ -57,13 +57,12 @@ namespace our
         void deserialize(const nlohmann::json &data) override;
     };
 
-    class LitMaterial : public Material
+    class LitMaterial : public TexturedMaterial
     {
     public:
         //(albedo, specular, roughness, ambient occlusion, emission).
         // Albedo is the proportion of incident light that is reflected away from a surface. Diffuse reflection is the reflection of light in many directions
-        glm::vec3 diffuse, specular, ambient;
-        float shininess, roughness, ambient_occlusion, emission;
+        Texture2D *albedo, *specular, *roughness, *ambient_occlusion, *emission;
 
         void setup() const override;
         void deserialize(const nlohmann::json &data) override;
