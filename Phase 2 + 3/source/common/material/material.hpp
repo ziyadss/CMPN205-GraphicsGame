@@ -57,6 +57,19 @@ namespace our
         void deserialize(const nlohmann::json &data) override;
     };
 
+    class LitMaterial : public Material
+    {
+    public:
+    //(albedo, specular, roughness, ambient occlusion, emission).
+    //Albedo is the proportion of incident light that is reflected away from a surface. Diffuse reflection is the reflection of light in many directions
+        glm::vec3 diffuse, specular, ambient;
+        float shininess, albedo, specular, roughness, ambient_occlusin, emission; 
+
+
+        void setup() const override;
+        void deserialize(const nlohmann::json &data) override;
+    };
+
     // This function returns a new material instance based on the given type
     inline Material *createMaterialFromType(const std::string &type)
     {
@@ -64,6 +77,8 @@ namespace our
             return new TintedMaterial();
         else if (type == "textured")
             return new TexturedMaterial();
+        else if (type == "lit")
+            return new LitMaterial();
         else
             return new Material();
     }

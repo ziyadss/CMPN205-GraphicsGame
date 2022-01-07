@@ -15,7 +15,9 @@ namespace our
     private:
         // Shader Program Handle
         GLuint program;
-        mutable std::unordered_map<std::string, GLuint> UniformLocationCache; //a list to store uniforms locations
+
+        // Uniform locations cache
+        std::unordered_map<std::string, GLuint> uniformLocations;
 
     public:
         void create();
@@ -30,55 +32,42 @@ namespace our
 
         void use()
         {
-            // Call opengl to use the program identified by this->program
             glUseProgram(program);
         }
 
         GLuint getUniformLocation(const std::string &name)
         {
+            // If not in cache, get location and add it
+            if (uniformLocations.find(name) == uniformLocations.end())
+                uniformLocations[name] = glGetUniformLocation(program, name.c_str());
 
-            // Check if uniform location is already stored in cache (no need to use openGl everytime)
-            if (UniformLocationCache.find(name) != UniformLocationCache.end())
-            {
-                return UniformLocationCache[name];
-            }
-            // If location not in cache , retrieve it using opengl function and store it in cache for later use
-            GLuint location = glGetUniformLocation(program, name.c_str());
-            UniformLocationCache[name] = location;
-            return location;
+            return uniformLocations[name];
         }
 
         void set(const std::string &uniform, GLfloat value)
         {
-            // Call opengl to set the value to the uniform defined by name
             glUniform1f(getUniformLocation(uniform), value);
         }
 
         void set(const std::string &uniform, glm::vec2 value)
         {
-            // Call opengl to set the value to the uniform defined by name
-            glUniform2f(getUniformLocation(uniform), value.x, value.y);
+            glUniform2fv(getUniformLocation(uniform), 1, glm::value_ptr(value));
         }
 
         void set(const std::string &uniform, glm::vec3 value)
         {
-            // Call opengl to set the value to the uniform defined by name
-            glUniform3f(getUniformLocation(uniform), value.x, value.y, value.z);
+            glUniform3fv(getUniformLocation(uniform), 1, glm::value_ptr(value));
         }
 
         void set(const std::string &uniform, glm::vec4 value)
         {
-            // Call opengl to set the value to the uniform defined by name
-            glUniform4f(getUniformLocation(uniform), value.x, value.y, value.z, value.w);
+            glUniform4fv(getUniformLocation(uniform), 1, glm::value_ptr(value));
         }
 
-        // Delete the copy constructor and assignment operator
-        ShaderProgram(ShaderProgram const &) = delete;
-        ShaderProgram &operator=(ShaderProgram const &) = delete;
-        //Question: Why do we do this? Hint: Look at the deconstructor
-        //the underlying opengl object is destroyed in deconstructor and if object is copied and one of them
-        //destroys it it will lead to an error if the other tries to still acess it.
-        //so we need to bind resource acquisition and release by the timelife of an object
+        // Deleting copy constructor and assignment operator as deconstructor deletes
+        //  the GL program used which would be shared between shallow copies.
+        ShaderProgram(const ShaderProgram &) = delete;
+        ShaderProgram &operator=(const ShaderProgram &) = delete;
     };
 
 }

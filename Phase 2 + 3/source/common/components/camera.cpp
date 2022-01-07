@@ -27,7 +27,6 @@ namespace our
     {
         auto owner = getOwner();
         auto M = owner->getLocalToWorldMatrix();
-        //TODO: Complete this function
         //HINT:
         // In the camera space:
         // - eye is the origin (0,0,0)
@@ -39,18 +38,30 @@ namespace our
         // - the center position which is the point (0,0,-1) but after being transformed by M
         // - the up direction which is the vector (0,1,0) but after being transformed by M
         // then you can use glm::lookAt
-        return glm::mat4(1.0f);
+
+        glm::vec3 eyePosition = M * glm::vec4(0, 0, 0, 1);
+        glm::vec3 centerPosition = M * glm::vec4(0, 0, -1, 1);
+        glm::vec3 upDirection = M * glm::vec4(0, 1, 0, 0);
+
+        return glm::lookAt(eyePosition, centerPosition, upDirection);
     }
 
     // Creates and returns the camera projection matrix
     // "viewportSize" is used to compute the aspect ratio
     glm::mat4 CameraComponent::getProjectionMatrix(glm::ivec2 viewportSize) const
     {
-        //TODO: Wrtie this function
         // NOTE: The function glm::ortho can be used to create the orthographic projection matrix
         // It takes left, right, bottom, top. Bottom is -orthoHeight/2 and Top is orthoHeight/2.
         // Left and Right are the same but after being multiplied by the aspect ratio
         // For the perspective camera, you can use glm::perspective
-        return glm::mat4(1.0f);
+
+        float aspectRatio = (float)viewportSize.x / viewportSize.y;
+        float halfHeight = orthoHeight / 2;
+        float halfWidth = halfHeight * aspectRatio;
+
+        if (cameraType == CameraType::ORTHOGRAPHIC)
+            return glm::ortho(-halfWidth, halfWidth, -halfHeight, halfHeight, near, far);
+        else
+            return glm::perspective(fovY, aspectRatio, near, far);
     }
 }
