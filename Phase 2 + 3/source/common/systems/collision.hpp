@@ -13,8 +13,7 @@ namespace our
     class CollisionSystem
     {
     public:
-        bool x = true;
-        // This should be called every frame to update all entities containing a MovementComponent.
+        // This should be called every frame to update all entities containing a ColliderComponent.
         void update(World *world, float deltaTime)
         {
             // For each entity in the world
