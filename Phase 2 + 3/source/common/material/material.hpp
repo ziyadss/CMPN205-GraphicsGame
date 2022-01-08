@@ -62,8 +62,11 @@ namespace our
     public:
         //(albedo, specular, roughness, ambient occlusion, emission).
         // Albedo is the proportion of incident light that is reflected away from a surface. Diffuse reflection is the reflection of light in many directions
-        glm::vec3 diffuse, specular, ambient;
-        float shininess, roughness, ambient_occlusion, emission;
+        Texture2D *albedo_map, *specular_map, *roughness_map, *ambient_occlusion_map, *emissive_map;
+        glm::vec3 albedo_tint, specular_tint, emissive_tint;
+        glm::vec2 roughness_range;
+
+        Sampler *sampler;
 
         void setup() const override;
         void deserialize(const nlohmann::json &data) override;
