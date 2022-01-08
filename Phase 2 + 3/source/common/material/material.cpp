@@ -31,6 +31,7 @@ namespace our
     void TintedMaterial::setup() const
     {
         Material::setup();
+        
         shader->set("tint", tint);
     }
 
@@ -38,8 +39,10 @@ namespace our
     void TintedMaterial::deserialize(const nlohmann::json &data)
     {
         Material::deserialize(data);
+
         if (!data.is_object())
             return;
+
         tint = data.value("tint", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     }
 
@@ -49,7 +52,10 @@ namespace our
     void TexturedMaterial::setup() const
     {
         TintedMaterial::setup();
+
         shader->set("alphaThreshold", alphaThreshold);
+
+        glActiveTexture(GL_TEXTURE0);
         texture->bind();
         sampler->bind(0);
         shader->set("tex", 0);
@@ -61,6 +67,7 @@ namespace our
         TintedMaterial::deserialize(data);
         if (!data.is_object())
             return;
+
         alphaThreshold = data.value("alphaThreshold", 0.0f);
         texture = AssetLoader<Texture2D>::get(data.value("texture", ""));
         sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
