@@ -107,7 +107,6 @@
         "position": [0, 0, 0],
         "rotation": [0, 0, 0],
         "scale": [10, 10, 10],
-        "name": "bullet",
         "components": [
           { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
           { "type": "Collider", "position": [0, 0, 0], "length": 1 }
