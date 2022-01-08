@@ -9,7 +9,7 @@ namespace our
         if (!data.is_object())
             return;
 
-        position = data.value("position", position);
-        length = data.value("length", length);
+        position = data.value("position", glm::vec3(0.0f, 0.0f, 0.0f));
+        length = data.value("length", 0.0f);
     }
 }
