@@ -70,45 +70,63 @@ namespace our
     // set the "diffuse", "specular" and "ambient" uniforms to the value in the member variables
     void LitMaterial::setup() const
     {
-        TexturedMaterial::setup();
+        Material::setup();
 
         glActiveTexture(GL_TEXTURE1);
-        albedo->bind();
+        albedo_map->bind();
         sampler->bind(1);
-        shader->set("material.albedo", 1);
+        shader->set("material.albedo_map", 1);
+        shader->set("material.albedo_tint", albedo_tint);
 
         glActiveTexture(GL_TEXTURE2);
-        specular->bind();
+        specular_map->bind();
         sampler->bind(2);
-        shader->set("material.specular", 2);
+        shader->set("material.specular_map", 2);
+        shader->set("material.specular_tint", specular_tint);
 
         glActiveTexture(GL_TEXTURE3);
-        roughness->bind();
+        roughness_map->bind();
         sampler->bind(3);
-        shader->set("material.roughness", 3);
+        shader->set("material.roughness_map", 3);
 
         glActiveTexture(GL_TEXTURE4);
-        ambient_occlusion->bind();
+        ambient_occlusion_map->bind();
         sampler->bind(4);
-        shader->set("material.ambient_occlusion", 4);
+        shader->set("material.ambient_occlusion_map", 4);
 
-        glActiveTexture(GL_TEXTURE5);
-        emission->bind();
-        sampler->bind(5);
-        shader->set("material.emission", 5);
+        if (emissive_map)
+        {
+            glActiveTexture(GL_TEXTURE5);
+            emissive_map->bind();
+            sampler->bind(5);
+            shader->set("material.emissive_map", 5);
+            shader->set("material.emissive_tint", emissive_tint);
+        }
+
+        shader->set("roughness_range", roughness_range);
     }
 
     // This function read the material data from a json object
     void LitMaterial::deserialize(const nlohmann::json &data)
     {
         Material::deserialize(data);
+
         if (!data.is_object())
             return;
-        albedo = AssetLoader<Texture2D>::get(data.value("albedo", ""));
-        specular = AssetLoader<Texture2D>::get(data.value("specular", ""));
-        roughness = AssetLoader<Texture2D>::get(data.value("roughness", ""));
-        ambient_occlusion = AssetLoader<Texture2D>::get(data.value("ambient_occlusion", ""));
-        emission = AssetLoader<Texture2D>::get(data.value("emission", ""));
+
+        albedo_map = AssetLoader<Texture2D>::get(data.value("albedo_map", ""));
+        specular_map = AssetLoader<Texture2D>::get(data.value("specular_map", ""));
+        roughness_map = AssetLoader<Texture2D>::get(data.value("roughness_map", ""));
+        ambient_occlusion_map = AssetLoader<Texture2D>::get(data.value("ambient_occlusion_map", ""));
+        emissive_map = AssetLoader<Texture2D>::get(data.value("emissive_map", ""));
+
+        albedo_tint = data.value("albedo_tint", glm::vec3(1.0f, 1.0f, 1.0f));
+        specular_tint = data.value("specular_tint", glm::vec3(1.0f, 1.0f, 1.0f));
+        emissive_tint = data.value("emissive_tint", glm::vec3(1.0f, 1.0f, 1.0f));
+
+        roughness_range = data.value("roughness_range", glm::vec2(0.0f, 1.0f));
+
+        sampler = AssetLoader<Sampler>::get(data.value("sampler", ""));
     }
 
 }
