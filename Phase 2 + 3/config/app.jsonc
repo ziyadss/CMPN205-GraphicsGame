@@ -15,6 +15,10 @@
         "textured": {
           "vs": "assets/shaders/textured.vert",
           "fs": "assets/shaders/textured.frag"
+        },
+        "lit": {
+          "vs": "assets/shaders/lit.vert",
+          "fs": "assets/shaders/lit.frag"
         }
       },
       "textures": {
@@ -22,7 +26,11 @@
         "grass": "assets/textures/grass_ground_d.jpg",
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
-        "monkey": "assets/textures/monkey.png"
+        "monkey_albedo": "assets/textures/lit_monkey/albedo.jpg",
+        "monkey_ambient": "assets/textures/lit_monkey/ambient_occlusion.jpg",
+        "monkey_roughness": "assets/textures/lit_monkey/roughness.jpg",
+        "monkey_specular": "assets/textures/lit_monkey/specular.jpg",
+        "monkey_emissive": "assets/textures/lit_monkey/emissive.jpg"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
@@ -74,14 +82,17 @@
           "sampler": "default"
         },
         "monkey": {
-          "type": "textured",
-          "shader": "textured",
+          "type": "lit",
+          "shader": "lit",
           "pipelineState": {
             "faceCulling": { "enabled": false },
             "depthTesting": { "enabled": true }
           },
-          "tint": [1, 1, 1, 1],
-          "texture": "monkey",
+          "albedo_map": "monkey_albedo",
+          "ambient_occlusion_map": "monkey_ambient",
+          "roughness_map": "monkey_roughness",
+          "specular_map": "monkey_specular",
+          "emissive_map": "monkey_emissive",
           "sampler": "default"
         },
         "moon": {
@@ -112,6 +123,17 @@
             "components": [
               { "type": "Mesh Renderer", "mesh": "cube", "material": "metal" }
             ]
+          }
+        ]
+      },
+      {
+        "position": [5, 5, 5],
+        "components": [
+          {
+            "type": "Light",
+            "lightType": "point",
+            "color": [1, 0, 0],
+            "enabled": true
           }
         ]
       },
@@ -180,7 +202,13 @@
         "scale": [5, 5, 5],
         "components": [
           { "type": "Mesh Renderer", "mesh": "sphere", "material": "moon" },
-          { "type": "Movement", "angularVelocity": [0, 90, 0] }
+          { "type": "Movement", "angularVelocity": [0, 90, 0] },
+          {
+            "type": "SkyLight",
+            "sky": [0.25, 0.3, 0.5],
+            "horizon": [0.35, 0.35, 0.4],
+            "ground": [0.25, 0.25, 0.25]
+          }
         ]
       }
     ]
