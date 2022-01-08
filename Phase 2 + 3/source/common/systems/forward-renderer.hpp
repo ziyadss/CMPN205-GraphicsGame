@@ -43,13 +43,24 @@ namespace our
         {
             // First of all, we search for a camera and for all the mesh renderers
             CameraComponent *camera = nullptr;
+            SkyLightComponent *skyLight = nullptr;
+
             opaqueCommands.clear();
             transparentCommands.clear();
+            lights.clear();
+
             for (auto entity : world->getEntities())
             {
                 // If we hadn't found a camera yet, we look for a camera in this entity
                 if (!camera)
                     camera = entity->getComponent<CameraComponent>();
+
+                if (!skyLight)
+                    skyLight = entity->getComponent<SkyLightComponent>();
+
+                if (auto light = entity->getComponent<LightComponent>(); light && light->enabled)
+                    lights.push_back(*light);
+
                 // If this entity has a mesh renderer component
                 if (auto meshRenderer = entity->getComponent<MeshRendererComponent>(); meshRenderer)
                 {
@@ -80,7 +91,7 @@ namespace our
 
             // HINT: See how you wrote the CameraComponent::getViewMatrix, it should help you solve this one
             // cameraForward contains a vector pointing the camera forward direction
-            glm::vec3 cameraForward = V * glm::vec4(0, 0, -1, 0);
+            glm::vec3 cameraForward = camera->getOwner()->getLocalToWorldMatrix() * glm::vec4(0, 0, -1, 0);
             std::sort(transparentCommands.begin(), transparentCommands.end(), [cameraForward](const RenderCommand &first, const RenderCommand &second)
                       {
                           // Returns true if "first" should be drawn before "second"
@@ -102,6 +113,9 @@ namespace our
             // Clear the color and depth buffers
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            // glm::vec3 cameraPosition = V * glm::vec4(0, 0, 0, 1);
+            glm::vec3 cameraPosiiton = camera->getOwner()->getLocalToWorldMatrix() * glm::vec4(0, 0, 0, 1);
+
             // Draw all the opaque commands followed by all the transparent commands
             // Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render command
             std::vector<RenderCommand> commands(opaqueCommands);
@@ -110,7 +124,35 @@ namespace our
             for (RenderCommand &command : commands)
             {
                 command.material->setup();
-                command.material->shader->set("transform", VP * command.localToWorld);
+
+                if (auto litMaterial = dynamic_cast<LitMaterial *>(command.material); litMaterial)
+                {
+                    litMaterial->shader->set("local_to_world", command.localToWorld);
+                    litMaterial->shader->set("VP", VP);
+                    litMaterial->shader->set("camera_position", cameraPosiiton);
+
+                    litMaterial->shader->set("light_count", (GLint)lights.size());
+                    for (int i = 0; i < lights.size(); i++)
+                    {
+                        glm::vec3 light_position = lights[i].getOwner()->getLocalToWorldMatrix() * glm::vec4(0, 0, 0, 1);
+                        glm::vec3 light_direction = lights[i].getOwner()->getLocalToWorldMatrix() * glm::vec4(0, 0, -1, 0);
+
+                        std::string light_name = "lights[" + std::to_string(i) + "]";
+                        litMaterial->shader->set(light_name + ".type", (GLint)lights[i].light_type);
+                        litMaterial->shader->set(light_name + ".color", lights[i].color);
+                        litMaterial->shader->set(light_name + ".position", light_position);
+                        litMaterial->shader->set(light_name + ".direction", light_direction);
+                        litMaterial->shader->set(light_name + ".attenuation", lights[i].attenuation);
+                        litMaterial->shader->set(light_name + ".spot_angle", lights[i].spot_angle);
+                    }
+
+                    litMaterial->shader->set("sky_light.sky", skyLight->sky);
+                    litMaterial->shader->set("sky_light.horizon", skyLight->horizon);
+                    litMaterial->shader->set("sky_light.ground", skyLight->ground);
+                }
+                else
+                    command.material->shader->set("transform", VP * command.localToWorld);
+
                 command.mesh->draw();
             }
         };
