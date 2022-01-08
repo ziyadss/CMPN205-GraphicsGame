@@ -21,7 +21,7 @@ class PlayState : public our::State
     void onInitialize() override
     {
         // First of all, we get the scene configuration from the app config
-        auto &config = getApp()->getConfig()["scene1"];
+        auto &config = getApp()->getConfig()["scene"];
         // If we have assets in the scene config, we deserialize them
         if (config.contains("assets"))
             our::deserializeAllAssets(config["assets"]);
