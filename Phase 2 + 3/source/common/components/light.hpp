@@ -19,27 +19,30 @@ namespace our
     class LightComponent : public Component
     {
     public:
-        LightType lightType; // The type of the light
-        glm::vec3 color;     // The color of the light
-        glm::mat4 LocalToWorldInvTrans;
+        LightType light_type; // The type of the light
+        bool enabled;         // Whether the light is enabled or not
+        glm::vec3 color;      // The color of the light
 
-        struct
-        {
-            float constant, linear, quadratic;
-        } attenuation;
+        glm::vec3 attenuation; // constant, linear, quadratic
 
-        struct
-        {
-            float inner, outer;
-        } spot_angle;
+        glm::vec2 spot_angle; // inner, outer
 
         // The ID of this component type is "Light"
         static std::string getID() { return "Light"; }
 
         // Reads light parameters from the given json object
         void deserialize(const nlohmann::json &data) override;
+    };
 
-        glm::mat4 getLocalToWorldMatrix() const;
-        glm::mat4 getLocalToWorldMatrixInvTrans() const;
+    class SkyLightComponent : public Component
+    {
+    public:
+        glm::vec3 sky, horizon, ground;
+
+        // The ID of this component type is "SkyLight"
+        static std::string getID() { return "SkyLight"; }
+
+        // Reads sky light parameters from the given json object
+        void deserialize(const nlohmann::json &data) override;
     };
 }

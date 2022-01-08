@@ -6,6 +6,8 @@
 #include "free-camera-controller.hpp"
 #include "movement.hpp"
 #include "collider.hpp"
+#include "light.hpp"
+
 namespace our
 {
 
@@ -25,6 +27,10 @@ namespace our
             component = entity->addComponent<MovementComponent>();
         else if (type == ColliderComponent::getID())
             component = entity->addComponent<ColliderComponent>();
+        else if (type == LightComponent::getID())
+            component = entity->addComponent<LightComponent>();
+        else if (type == SkyLightComponent::getID())
+            component = entity->addComponent<SkyLightComponent>();
 
         if (component)
             component->deserialize(data);
