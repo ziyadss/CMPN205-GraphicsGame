@@ -18,6 +18,7 @@ class PlayState : public our::State
     our::FreeCameraControllerSystem cameraController;
     our::MovementSystem movementSystem;
     our::CollisionSystem collisionSystem;
+
     void onInitialize() override
     {
         // First of all, we get the scene configuration from the app config

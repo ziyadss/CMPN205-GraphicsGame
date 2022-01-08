@@ -13,13 +13,12 @@ namespace our
     class ColliderComponent : public Component
     {
     public:
-        glm::vec3 position = {0, 0, 0};  // Each frame, the entity should have: position += length
-        float length = 0; // Each frame, the entity should rotate as follows: length
+        glm::vec3 position = {0, 0, 0}; // Each frame, the entity should have: position += length
+        float length = 0;               // Each frame, the entity should rotate as follows: length
 
         // The ID of this component type is "Collider"
         static std::string getID() { return "Collider"; }
 
-        // Reads linearVelocity & angularVelocity from the given json object
         void deserialize(const nlohmann::json &data) override;
     };
 
