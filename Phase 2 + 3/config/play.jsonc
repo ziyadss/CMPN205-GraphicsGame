@@ -1,0 +1,184 @@
+{
+  "start-scene": "main",
+  "window": {
+    "title": "Default Game Window",
+    "size": { "width": 1280, "height": 720 },
+    "fullscreen": false
+  },
+  "scene": {
+    "assets": {
+      "shaders": {
+        "tinted": {
+          "vs": "assets/shaders/tinted.vert",
+          "fs": "assets/shaders/tinted.frag"
+        },
+        "textured": {
+          "vs": "assets/shaders/textured.vert",
+          "fs": "assets/shaders/textured.frag"
+        }
+      },
+      "textures": {
+        "moon": "assets/textures/moon.jpg",
+        "grass": "assets/textures/grass_ground_d.jpg",
+        "wood": "assets/textures/wood.jpg",
+        "glass": "assets/textures/glass-panels.png",
+        "monkey": "assets/textures/monkey.png"
+      },
+      "meshes": {
+        "cube": "assets/models/cube.obj",
+        "monkey": "assets/models/monkey.obj",
+        "plane": "assets/models/plane.obj",
+        "sphere": "assets/models/sphere.obj"
+      },
+      "samplers": {
+        "default": {},
+        "pixelated": { "MAG_FILTER": "GL_NEAREST" }
+      },
+      "materials": {
+        "metal": {
+          "type": "tinted",
+          "shader": "tinted",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "tint": [0.45, 0.4, 0.5, 1]
+        },
+        "red": {
+          "type": "tinted",
+          "shader": "tinted",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "tint": [1, 0, 0, 1]
+        },
+        "green": {
+          "type": "tinted",
+          "shader": "tinted",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "tint": [0, 1, 0, 1]
+        },
+        "blue": {
+          "type": "tinted",
+          "shader": "tinted",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "tint": [0, 0, 1, 1]
+        },
+        "white": {
+          "type": "tinted",
+          "shader": "tinted",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "tint": [1, 1, 1, 1]
+        },
+        "grey": {
+          "type": "tinted",
+          "shader": "tinted",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "tint": [0.8, 0.8, 0.8, 1]
+        },
+        "wood": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "tint": [1, 1, 1, 1],
+          "texture": "wood",
+          "sampler": "default"
+        }
+      }
+    },
+    "world": [
+      {
+        "position": [0, 0, 10],
+        "components": [
+          { "type": "Camera" },
+          { "type": "Free Camera Controller" }
+        ],
+        "children": [
+          {
+            "position": [1, -1, -1],
+            "rotation": [45, 45, 0],
+            "scale": [0.1, 0.1, 0.1],
+            "name": "bullet",
+            "components": [
+              {
+                "type": "Mesh Renderer",
+                "mesh": "sphere",
+                "material": "metal"
+              },
+              { "type": "Collider", "position": [0, 0, 0], "length": 1 },
+              {
+                "type": "Movement",
+                "linearVelocity": [0, 0, 0],
+                "angularVelocity": [0, 0, 0]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "position": [0, -1, 0],
+        "rotation": [-90, 0, 0],
+        "scale": [10, 10, 1],
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "plane", "material": "wood" }
+        ]
+      },
+      {
+        "position": [2, -0.5, 2],
+        "rotation": [0, 0, 0],
+        "scale": [0.5, 0.5, 0.5],
+        "name": "cube",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "red" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
+        "position": [0, 0, -2],
+        "rotation": [0, 0, 0],
+        "scale": [0.5, 0.5, 0.5],
+        "name": "cube",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "green" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
+        "position": [8, 0, 0],
+        "rotation": [0, 90, 0],
+        "scale": [0.5, 0.5, 0.5],
+        "name": "cube",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "blue" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
+        "position": [-8, -0.5, 0],
+        "rotation": [0, 90, 0],
+        "scale": [0.5, 0.5, 0.5],
+        "name": "cube",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "red" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      }
+    ]
+  }
+}
