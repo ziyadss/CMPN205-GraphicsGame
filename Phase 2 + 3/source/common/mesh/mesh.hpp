@@ -15,8 +15,12 @@ namespace our
     {
         // Here, we store the object names of the 3 main components of a mesh:
         // A vertex array object, A vertex buffer and an element buffer
-        unsigned int VBO, EBO;
-        unsigned int VAO;
+        unsigned int VBO, EBO, VAO;
+
+        // Vertex Buffer Object: data of the vertices
+        // Element Buffer Object: data of the indices of those vertices (3 in our case)
+        // Vertex Array Object: pointers to the attributes of those vertices (colors and other attributes set by glVertexAttribPointer)
+
         // We need to remember the number of elements that will be draw by glDrawElements
         GLsizei elementCount;
 
@@ -30,50 +34,81 @@ namespace our
         // a vertex array object to define how to read the vertex & element buffer during rendering
         Mesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &elements)
         {
-            //TODO: Write this function
-            // remember to store the number of elements in "elementCount" since you will need it for drawing
-            // For the attribute locations, use the constants defined above: ATTRIB_LOC_POSITION, ATTRIB_LOC_COLOR, etc
-            elementCount = elements.size();
+            // For the attribute locations, we use the constants defined above: ATTRIB_LOC_POSITION, ATTRIB_LOC_COLOR, etc
+
+            // Create a vertex array object and 'bind' (select) it
             glGenVertexArrays(1, &VAO);
             glBindVertexArray(VAO);
+
+            // Create a vertex buffer and bind it so we can then fill it with the vertices' data
             glGenBuffers(1, &VBO);
             glBindBuffer(GL_ARRAY_BUFFER, VBO);
-            glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices.front(), GL_STATIC_DRAW);
+            // GL_ARRAY_BUFFER: Vertex attributes
+            // vertices.size() * sizeof(Vertex): size of the buffer's data in bytes
+            // &vertices.front(): pointer to the first element of the buffer's data
+            // GL_STATIC_DRAW: the data will only be modified once, by the application, and used as a source for GL drawing commands
+
+            // Similarly for the element buffer
             glGenBuffers(1, &EBO);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-            glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementCount * sizeof(unsigned int), &elements[0], GL_STATIC_DRAW);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements.size() * sizeof(unsigned int), &elements.front(), GL_STATIC_DRAW);
+            // GL_ELEMENT_ARRAY_BUFFER: Vertex array indices
 
-            
-            glVertexAttribPointer(ATTRIB_LOC_POSITION, 3, GL_FLOAT, false, sizeof(Vertex),  (void *)offsetof(Vertex, position));
+            // Set the position attribute locations
+            glVertexAttribPointer(ATTRIB_LOC_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, position));
+            // ATTRIB_LOC_POSITION: index of attribute to be modified
+            // 3: number of components of the attribute
+            // GL_FLOAT: data type of each component attribute
+            // GL_FALSE: whether the data should be normalized (i.e. divided by MAX to get 0 to 1 or -1 to 1)
+            // sizeof(Vertex): offset between consecutive attribute occurrences in the buffer, in bytes
+            // (void *)offsetof(Vertex, position): offset of the attribute in the buffer, in bytes
+
+            // Enable the position attribute using its location
             glEnableVertexAttribArray(ATTRIB_LOC_POSITION);
-            
-            glVertexAttribPointer(ATTRIB_LOC_COLOR, 4, GL_UNSIGNED_BYTE, true, sizeof(Vertex), (void *)offsetof(Vertex, color));
+
+            // Similarly for other attributes
+            glVertexAttribPointer(ATTRIB_LOC_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void *)offsetof(Vertex, color));
             glEnableVertexAttribArray(ATTRIB_LOC_COLOR);
-            
-            glVertexAttribPointer(ATTRIB_LOC_TEXCOORD, 2, GL_FLOAT, true, sizeof(Vertex), (void *)offsetof(Vertex, tex_coord));    
+
+            glVertexAttribPointer(ATTRIB_LOC_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, tex_coord));
             glEnableVertexAttribArray(ATTRIB_LOC_TEXCOORD);
-            
-            glVertexAttribPointer(ATTRIB_LOC_NORMAL, 3, GL_FLOAT, true, sizeof(Vertex), (void *)offsetof(Vertex, normal));
+
+            glVertexAttribPointer(ATTRIB_LOC_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
             glEnableVertexAttribArray(ATTRIB_LOC_NORMAL);
 
+            // Unbind the vertex array object and the buffers
             glBindVertexArray(0);
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+            // Store the number of elements in "elementCount" since it will be needed for drawing
+            elementCount = (GLsizei)elements.size();
         }
 
         // this function should render the mesh
         void draw()
         {
-            //TODO: Write this function
+            // Bind the vertex array object
             glBindVertexArray(VAO);
+
+            // How did it know the EBO to draw?
+
+            // Draw the mesh
             glDrawElements(GL_TRIANGLES, elementCount, GL_UNSIGNED_INT, 0);
+            // GL_TRIANGLES: primitive type to be rendered
+            // elementCount: number of elements to be rendered
+            // GL_UNSIGNED_INT: data type of the indices
+            // 0: offset of the first index to be read
+
+            // Unbind the vertex array object
             glBindVertexArray(0);
         }
 
         // this function should delete the vertex & element buffers and the vertex array object
         ~Mesh()
         {
-            //TODO: Write this function
+            // Delete the vertex array, vertex buffer and element buffer
             glDeleteVertexArrays(1, &VAO);
             glDeleteBuffers(1, &VBO);
             glDeleteBuffers(1, &EBO);

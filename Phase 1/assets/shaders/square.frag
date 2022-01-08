@@ -2,22 +2,17 @@
 
 out vec4 frag_color;
 
-//TODO: Define uniforms for the center and the side-length
-uniform float side_length;
-uniform vec2 center;
+uniform vec2 center = vec2(256, 256);
+uniform float side_length = 128;
 
 uniform vec4 inside_color = vec4(1.0, 0.0, 0.0, 1.0);
 uniform vec4 outside_color = vec4(0.0, 0.0, 0.0, 1.0);
 
 void main()
 {
-    float x = gl_FragCoord.x;
-    float y = gl_FragCoord.y;
-    float x_c = center.x;
-    float y_c = center.y;
-    if (max(abs(x - x_c), abs(y - y_c)) <= 0.5 * side_length){
-        frag_color = inside_color;
-    } else {
-        frag_color = outside_color;
-    }
+    vec2 vector = gl_FragCoord.xy - center;
+    float chebyshevDistance = max(abs(vector.x), abs(vector.y));
+    
+    // If Chebyshev distance is less than or equal to half the side length, set color to inside color
+    frag_color = (chebyshevDistance <= side_length / 2) ? inside_color : outside_color;
 }

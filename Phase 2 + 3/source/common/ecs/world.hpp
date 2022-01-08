@@ -58,7 +58,7 @@ namespace our
             markedForRemoval.clear();
         }
 
-        //This deletes all entities in the world
+        // This deletes all entities in the world
         void clear()
         {
             for (auto entity : entities)
@@ -68,7 +68,7 @@ namespace our
             markedForRemoval.clear();
         }
 
-        //Since the world owns all of its entities, they should be deleted alongside it.
+        // Since the world owns all of its entities, they should be deleted alongside it.
         ~World()
         {
             clear();

@@ -10,7 +10,7 @@
 #include <asset-loader.hpp>
 
 // This state shows how to use the ECS framework and deserialization.
-class Playstate : public our::State
+class PlayState : public our::State
 {
 
     our::World world;

@@ -3,19 +3,20 @@
 #include <cassert>
 #include <iostream>
 #include <fstream>
-#include <string>
+#include <sstream>
 
 void our::ShaderProgram::create()
 {
-    //Create Shader Program
+    // Create Shader Program
     program = glCreateProgram();
 }
 
 void our::ShaderProgram::destroy()
 {
-    //Delete Shader Program
+    // Delete Shader Program
     if (program != 0)
         glDeleteProgram(program);
+        
     program = 0;
 }
 
@@ -33,14 +34,17 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
         return false;
     }
 
-    std::string sourceString = std::string(std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>());
-    const char *sourceCStr = sourceString.c_str();
+    std::stringstream buffer;
+    buffer << file.rdbuf();
     file.close();
+    
+    const std::string sourceString = buffer.str();
+    const char *sourceCString = sourceString.c_str();
 
     GLuint shaderID = glCreateShader(type);
 
-    // Sending the source code to the shader and compile it..
-    glShaderSource(shaderID, 1, &sourceCStr, nullptr);
+    // We send shader source code to GL, then compile it
+    glShaderSource(shaderID, 1, &sourceCString, nullptr);
     glCompileShader(shaderID);
 
     // Here we check for compilation errors
@@ -52,8 +56,8 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
         return false;
     }
 
-    // Attaching the shader to the program then delete the shader..
-    glAttachShader(this->program, shaderID);
+    // We attach the shader to the program then delete it
+    glAttachShader(program, shaderID);
     glDeleteShader(shaderID);
 
     // We return true since the compilation succeeded
@@ -62,8 +66,8 @@ bool our::ShaderProgram::attach(const std::string &filename, GLenum type) const
 
 bool our::ShaderProgram::link() const
 {
-    // Calling opengl to link the program identified by this->program..
-    glLinkProgram(this->program);
+    // We link the program to GL
+    glLinkProgram(program);
 
     // Here we check for linking errors
     if (auto error = checkForLinkingErrors(program); error.size() != 0)
