@@ -12,75 +12,45 @@ namespace our
 
     class CollisionSystem
     {
+        std::vector<ColliderComponent *> bullets, cubes;
+
     public:
         // This should be called every frame to update all entities containing a ColliderComponent.
         void update(World *world, float deltaTime)
         {
-            // For each entity in the world
-            ColliderComponent *bullet = nullptr;
-            ColliderComponent *cube = nullptr;
-            Entity *Bullet = nullptr;
-            // ColliderComponent *cube=nullptr;
-            float raduisBullet = 0;
-            float lengthCube = 0;
-            glm::vec3 positionCube = {0, 0, 0};
-            glm::vec3 centerBullet = {0, 0, 0};
-            // cout<<"Collider update called"<<endl;
-            for (auto entity : world->getEntities())
-            {
-                // Get the collider component if it exists
-                ColliderComponent *collider = entity->getComponent<ColliderComponent>();
+            bullets.clear();
+            cubes.clear();
 
-                // If the collider component exists
-                if (collider && entity->name == "bullet")
-                {
-                    // cout<<"bullet collider found"<<endl;
-                    bullet = collider;
-                    Bullet = entity;
-                    // centerBullet=collider->position +glm::vec3(entity->getLocalToWorldMatrix()*glm::vec4(0, 0, 0, 1));
-                    // raduisBullet=collider->length * glm::length(entity->localTransform.scale)*1.7;
-                    for (auto entity2 : world->getEntities())
-                    {
-                        // Get the collider component if it exists
-                        ColliderComponent *collider2 = entity2->getComponent<ColliderComponent>();
+            for (const auto &entity : world->getEntities())
+                if (auto bullet = entity->getComponent<ColliderComponent>(); bullet && entity->name == "bullet")
+                    bullets.push_back(bullet);
+                else if (auto cube = entity->getComponent<ColliderComponent>(); cube && entity->name == "cube")
+                    cubes.push_back(cube);
 
-                        // If the collider component exists
-                        if (collider2 && entity2->name == "cube")
-                        {
-                            //  cout<<"plane collider found"<<endl;
-                            cube = collider2;
-                            // positionCube=collider->position +glm::vec3(entity->getLocalToWorldMatrix()*glm::vec4(0, 0, 0, 1));
-                            // lengthCube=collider->length * glm::length(entity->localTransform.scale)*1.7;
-                            if (checkCollision(bullet, collider2, Bullet, entity2))
-                            {
-                                // world->markForRemoval(entity);
-                                MeshRendererComponent *Mesh = entity2->getComponent<MeshRendererComponent>();
-                                Mesh->material = AssetLoader<Material>::get("white");
-                            }
-                        }
-                    }
-                }
-            }
+            for (auto bullet : bullets)
+                for (auto cube : cubes)
+                    if (checkCollision(bullet, cube))
+                        world->markForRemoval(cube->getOwner());
 
             world->deleteMarkedEntities();
         }
-        bool checkCollision(ColliderComponent *bullet, ColliderComponent *cube, Entity *Bullet, Entity *Cube)
+
+        bool checkCollision(ColliderComponent *bulletComponent, ColliderComponent *cubeComponent)
         {
+            auto bullet = bulletComponent->getOwner();
+            auto cube = cubeComponent->getOwner();
 
-            glm::vec3 centerBullet = bullet->position + glm::vec3(Bullet->getLocalToWorldMatrix() * glm::vec4(0, 0, 0, 1));
+            glm::vec3 bulletCenter = bulletComponent->position + glm::vec3(bullet->getLocalToWorldMatrix() * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+            glm::vec3 cubeCenter = cubeComponent->position + glm::vec3(cube->getLocalToWorldMatrix() * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+            glm::vec3 cubeLength = glm::vec3(cubeComponent->length, cubeComponent->length, cubeComponent->length) * cube->localTransform.scale;
 
-            float raduisBullet = bullet->length * glm::length(Bullet->localTransform.scale);
+            glm::vec3 difference = bulletCenter - cubeCenter;
+            glm::vec3 clampedDifference = glm::clamp(difference, cubeLength * glm::vec3(-1.0f, -1.0f, -1.0f), cubeLength);
+            glm::vec3 cubePoint = cubeCenter + clampedDifference;
 
-            glm::vec3 positionCube = cube->position + glm::vec3(Cube->getLocalToWorldMatrix() * glm::vec4(0, 0, 0, 1));
-
-            glm::vec3 lengthCube = glm::vec3(cube->length, cube->length, cube->length) * Cube->localTransform.scale;
-            glm::vec3 difference = centerBullet - positionCube;
-
-            glm::vec3 clampedDifference = glm::clamp(difference, lengthCube * glm::vec3(-1.0f, -1.0f, -1.0f), lengthCube);
-
-            glm::vec3 cubePoint = positionCube + clampedDifference;
-            difference = cubePoint - centerBullet;
-            return glm::length(difference) < raduisBullet;
+            difference = cubePoint - bulletCenter;
+            float bulletRadius = bulletComponent->length * glm::length(bullet->localTransform.scale);
+            return glm::length(difference) < bulletRadius;
         }
     };
 

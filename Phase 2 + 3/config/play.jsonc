@@ -104,15 +104,6 @@
     },
     "world": [
       {
-        "position": [0, 0, 0],
-        "rotation": [0, 0, 0],
-        "scale": [10, 10, 10],
-        "components": [
-          { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
-          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
-        ]
-      },
-      {
         "position": [0, 0, 10],
         "components": [
           { "type": "Camera" },
