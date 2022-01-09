@@ -104,7 +104,57 @@
     },
     "world": [
       {
+        "position": [0, 10, 0],
+        "rotation": [0, 0, 0],
+        "scale": [10, 0.02, 10],
+        "name": "wall",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
+        "position": [-10, 0, 0],
+        "rotation": [0, 90, 0],
+        "scale": [10, 10, 0.02],
+        "name": "wall",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
+        "position": [10, 0, 0],
+        "rotation": [0, 90, 0],
+        "scale": [10, 10, 0.02],
+        "name": "wall",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
         "position": [0, 0, 10],
+        "rotation": [90, 0, 0],
+        "scale": [10, 0.02, 10],
+        "name": "wall",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
+        "position": [0, 0, -10],
+        "rotation": [90, 0, 0],
+        "scale": [10, 0.02, 10],
+        "name": "wall",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
+        "position": [0, 0, 9.8],
         "components": [
           { "type": "Camera" },
           { "type": "Free Camera Controller" }
@@ -119,9 +169,10 @@
               {
                 "type": "Mesh Renderer",
                 "mesh": "sphere",
-                "material": "metal"
+                "material": "red"
               },
               { "type": "Collider", "position": [0, 0, 0], "length": 1 },
+              { "type": "Free player Controller", "bulletSpeed": 0},
               {
                 "type": "Movement",
                 "linearVelocity": [0, 0, 0],

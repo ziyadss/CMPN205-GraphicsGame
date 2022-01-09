@@ -5,6 +5,7 @@
 #include <ecs/world.hpp>
 #include <systems/forward-renderer.hpp>
 #include <systems/free-camera-controller.hpp>
+#include <systems/free-player-controller.hpp>
 #include <systems/movement.hpp>
 #include <systems/collision.hpp>
 #include <asset-loader.hpp>
@@ -18,6 +19,7 @@ class PlayState : public our::State
     our::FreeCameraControllerSystem cameraController;
     our::MovementSystem movementSystem;
     our::CollisionSystem collisionSystem;
+    our::FreePlayerControllerSystem playerController;
 
     void onInitialize() override
     {
@@ -32,6 +34,7 @@ class PlayState : public our::State
 
         // We initialize the camera controller system since it needs a pointer to the app
         cameraController.enter(getApp());
+        playerController.enter(getApp());
     }
 
     void onDraw(double deltaTime) override
@@ -40,6 +43,7 @@ class PlayState : public our::State
         movementSystem.update(&world, (float)deltaTime);
         cameraController.update(&world, (float)deltaTime);
         collisionSystem.update(&world, (float)deltaTime);
+        playerController.update(&world, (float)deltaTime);
         // And finally we use the renderer system to draw the scene
         auto size = getApp()->getFrameBufferSize();
         renderer.render(&world, glm::ivec2(0, 0), size);

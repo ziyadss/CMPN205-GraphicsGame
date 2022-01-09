@@ -2,6 +2,7 @@
 
 #include "../ecs/world.hpp"
 #include "../components/collider.hpp"
+#include "../components/movement.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
@@ -12,7 +13,7 @@ namespace our
 
     class CollisionSystem
     {
-        std::vector<ColliderComponent *> bullets, cubes;
+        std::vector<ColliderComponent *> bullets, cubes, walls;
 
     public:
         // This should be called every frame to update all entities containing a ColliderComponent.
@@ -26,11 +27,29 @@ namespace our
                     bullets.push_back(bullet);
                 else if (auto cube = entity->getComponent<ColliderComponent>(); cube && entity->name == "cube")
                     cubes.push_back(cube);
+                else if (auto wall = entity->getComponent<ColliderComponent>(); wall && entity->name == "wall")
+                    walls.push_back(wall);
 
             for (auto bullet : bullets)
+            {
                 for (auto cube : cubes)
                     if (checkCollision(bullet, cube))
-                        world->markForRemoval(cube->getOwner());
+                    {
+                        // world->markForRemoval(cube->getOwner());
+                        MeshRendererComponent *Mesh = cube->getOwner()->getComponent<MeshRendererComponent>();
+                        Mesh->material = AssetLoader<Material>::get("white");
+                        MovementComponent *movement = bullet->getOwner()->getComponent<MovementComponent>();
+                        movement->linearVelocity = {0, 0, 0};
+                        bullet->getOwner()->localTransform.position = {1, -1, -1};
+                    }
+                for (auto wall : walls)
+                    if (checkCollision(bullet, wall))
+                    {
+                        MovementComponent *movement = bullet->getOwner()->getComponent<MovementComponent>();
+                        movement->linearVelocity = {0, 0, 0};
+                        bullet->getOwner()->localTransform.position = {1, -1, -1};
+                    }
+            }
 
             world->deleteMarkedEntities();
         }
@@ -46,8 +65,8 @@ namespace our
 
             glm::vec3 difference = bulletCenter - cubeCenter;
             glm::vec3 clampedDifference = glm::clamp(difference, cubeLength * glm::vec3(-1.0f, -1.0f, -1.0f), cubeLength);
+            
             glm::vec3 cubePoint = cubeCenter + clampedDifference;
-
             difference = cubePoint - bulletCenter;
             float bulletRadius = bulletComponent->length * glm::length(bullet->localTransform.scale);
             return glm::length(difference) < bulletRadius;

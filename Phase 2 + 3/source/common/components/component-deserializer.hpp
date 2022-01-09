@@ -4,6 +4,7 @@
 #include "camera.hpp"
 #include "mesh-renderer.hpp"
 #include "free-camera-controller.hpp"
+#include "free-player-controller.hpp"
 #include "movement.hpp"
 
 #include "collider.hpp"
@@ -32,6 +33,8 @@ namespace our
             component = entity->addComponent<LightComponent>();
         else if (type == SkyLightComponent::getID())
             component = entity->addComponent<SkyLightComponent>();
+        else if (type == FreePlayerControllerComponent::getID())
+            component = entity->addComponent<FreePlayerControllerComponent>();
 
         if (component)
             component->deserialize(data);
