@@ -20,7 +20,7 @@ namespace our
     {
         Application *app;     // The application in which the state runs
         float wait = 0.0f;       // time to wait for keypresses
-        float interval = 0.05f; // time taken before reading another key
+        float interval = 0.5f; // time taken before reading another key
     public:
         // When a state enters, it should call this function and give it the pointer to the application
         void enter(Application *app)
@@ -35,6 +35,8 @@ namespace our
             Entity *bullet = nullptr;
             // First of all, we search for an entity containing both a CameraComponent and a FreeCameraControllerComponent
             // As soon as we find one, we break
+            if(wait>0)
+                wait+= deltaTime;
             for (auto entity : world->getEntities())
             {
                 controller = entity->getComponent<FreePlayerControllerComponent>();
