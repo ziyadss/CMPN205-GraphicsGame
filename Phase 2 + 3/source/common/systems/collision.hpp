@@ -42,13 +42,20 @@ namespace our
                         movement->linearVelocity = {0, 0, 0};
                         bullet->getOwner()->localTransform.position = {1, -1, -1};
                     }
-                for (auto wall : walls)
-                    if (checkCollision(bullet, wall))
-                    {
-                        MovementComponent *movement = bullet->getOwner()->getComponent<MovementComponent>();
-                        movement->linearVelocity = {0, 0, 0};
-                        bullet->getOwner()->localTransform.position = {1, -1, -1};
-                    }
+                // for (auto wall : walls)
+                //     if (checkCollision(bullet, wall))
+                //     {
+                //         MovementComponent *movement = bullet->getOwner()->getComponent<MovementComponent>();
+                //         movement->linearVelocity = {0, 0, 0};
+                //         bullet->getOwner()->localTransform.position = {1, -1, -1};
+                //     }
+                glm::vec3 bulletCenter = bullet->position + glm::vec3(bullet->getOwner()->getLocalToWorldMatrix() * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+                if (bulletCenter.x > 11 || bulletCenter.x < -11 || bulletCenter.y > 11 || bulletCenter.y < -11 || bulletCenter.z > 11 || bulletCenter.z < -11)
+                {
+                    MovementComponent *movement = bullet->getOwner()->getComponent<MovementComponent>();
+                    movement->linearVelocity = {0, 0, 0};
+                    bullet->getOwner()->localTransform.position = {1, -1, -1};
+                }
             }
 
             world->deleteMarkedEntities();
@@ -65,7 +72,7 @@ namespace our
 
             glm::vec3 difference = bulletCenter - cubeCenter;
             glm::vec3 clampedDifference = glm::clamp(difference, cubeLength * glm::vec3(-1.0f, -1.0f, -1.0f), cubeLength);
-            
+
             glm::vec3 cubePoint = cubeCenter + clampedDifference;
             difference = cubePoint - bulletCenter;
             float bulletRadius = bulletComponent->length * glm::length(bullet->localTransform.scale);
