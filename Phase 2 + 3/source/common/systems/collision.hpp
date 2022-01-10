@@ -18,10 +18,20 @@ namespace our
     public:
         // This should be called every frame to update all entities containing a ColliderComponent.
 
-        void checkCollisionColor(ColliderComponent *bullet, ColliderComponent *cube)
+        bool checkCollisionColor(ColliderComponent *bullet, ColliderComponent *cube)
         {
-            //this function checks that the color of the bullet compnent and the collider component
-            //match the necessary logic (i.e are complimentary, or pseudo complimentary for testing)
+            // this function checks that the color of the bullet component and the collider component
+            // match the necessary logic (i.e are complimentary
+            auto bulletMaterial = bullet->getOwner()->getComponent<MeshRendererComponent>()->material;
+            auto cubeMaterial = cube->getOwner()->getComponent<MeshRendererComponent>()->material;
+
+            auto bulletColor = (dynamic_cast<TintedMaterial *>(bulletMaterial))->tint;
+            auto cubeColor = (dynamic_cast<TintedMaterial *>(cubeMaterial))->tint;
+
+            glm::vec3 white = bulletColor + cubeColor;
+            return (white == glm::vec3(1, 1, 1));
+
+            // missing: necessary bullet logic (destroy or return)
         }
         void update(World *world, float deltaTime)
         {
@@ -42,13 +52,12 @@ namespace our
                 for (auto cube : cubes)
                     if (checkCollision(bullet, cube))
                     {
-                        // world->markForRemoval(cube->getOwner());
                         MeshRendererComponent *Mesh = cube->getOwner()->getComponent<MeshRendererComponent>();
 
-                        //this should check the color of the colliders first
-                        //(bad implementation) iterate through all assets -->
-                        if (bullet->getOwner()->getComponent<MeshRendererComponent>()->material == cube->getOwner()->getComponent<MeshRendererComponent>()->material)
-                            checkCollisionColor(cube, bullet);
+                        // this should check the color of the colliders first
+                        if (checkCollisionColor(bullet, cube))
+                            world->markForRemoval(cube->getOwner());
+
                         MovementComponent *movement = bullet->getOwner()->getComponent<MovementComponent>();
                         movement->linearVelocity = {0, 0, 0};
                         bullet->getOwner()->localTransform.position = {1, -1, -1};
@@ -63,6 +72,7 @@ namespace our
                     }
 
                 glm::vec3 bulletCenter = bullet->position + glm::vec3(bullet->getOwner()->getLocalToWorldMatrix() * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
                 if (bulletCenter.x > 11 || bulletCenter.x < -11 || bulletCenter.y > 11 || bulletCenter.y < -11 || bulletCenter.z > 11 || bulletCenter.z < -11)
                 {
                     MovementComponent *movement = bullet->getOwner()->getComponent<MovementComponent>();
