@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ecs/component.hpp"
+#include "mesh-renderer.hpp"
 #include <glm/glm.hpp>
 #include <glm/gtx/euler_angles.hpp>
 #include "../ecs/entity.hpp"
@@ -34,7 +34,7 @@ namespace our
         void deserialize(const nlohmann::json &data) override;
     };
 
-    class SkyLightComponent : public Component
+    class SkyLightComponent : public MeshRendererComponent
     {
     public:
         glm::vec3 sky, horizon, ground;

@@ -31,6 +31,8 @@ namespace our
     // Reads sky light parameters from the given json object
     void SkyLightComponent::deserialize(const nlohmann::json &data)
     {
+        MeshRendererComponent::deserialize(data);
+
         if (!data.is_object())
             return;
 
