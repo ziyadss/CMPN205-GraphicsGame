@@ -138,9 +138,12 @@ namespace our
             if (app->getKeyboard().isPressed(GLFW_KEY_A))
                 position -= right * (deltaTime * current_sensitivity.x);
 
+            // if (position.y < 0.0f)
+            position.y = 0.0f;
+
+            MovementComponent *bulletMovement = bullet->getComponent<MovementComponent>();
             if (app->getKeyboard().isPressed(GLFW_KEY_SPACE))
             {
-                MovementComponent *bulletMovement = bullet->getComponent<MovementComponent>();
                 bulletMovement->linearVelocity = {0, 0, -10};
             }
 
@@ -151,6 +154,9 @@ namespace our
                     wait += deltaTime; // so that the keyboard press is read as one press only
                     return;
                 }
+
+                if (bulletMovement->linearVelocity != glm::vec3(0, 0, 0))
+                    return;
 
                 auto bullet_color = &dynamic_cast<TintedMaterial *>(bullet->getComponent<MeshRendererComponent>()->material)->tint;
                 *bullet_color = {0, 0, 0, 0};
