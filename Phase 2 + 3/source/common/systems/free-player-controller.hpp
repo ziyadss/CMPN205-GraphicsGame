@@ -10,6 +10,16 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp>
 
+const int COLORS_COUNT = 6;
+const glm::vec4 COLORS[COLORS_COUNT] = {
+    glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), // red
+    glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), // green
+    glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), // blue
+    glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), // yellow
+    glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), // magenta
+    glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), // cyan
+};
+
 namespace our
 {
 
@@ -21,23 +31,27 @@ namespace our
         Application *app;      // The application in which the state runs
         float wait = 0.0f;     // time to wait for keypresses
         float interval = 0.5f; // time taken before reading another key
+
+        int color = 0;
+
     public:
         // When a state enters, it should call this function and give it the pointer to the application
         void enter(Application *app)
         {
             this->app = app;
         }
-        int color = 0; // 0-> red, 1->blue, 2->green
+
         // This should be called every frame to update all entities containing a FreePlayerControllerComponent
         void update(World *world, float deltaTime)
         {
             FreePlayerControllerComponent *controller = nullptr;
             Entity *bullet = nullptr;
-            
-            // First of all, we search for an entity containing both a PlayerComponent and a FreePlayerControllerComponent
-            // As soon as we find one, we break
             if (wait > 0)
                 wait += deltaTime;
+
+            // First of all, we search for an entity containing both a PlayerComponent and a FreePlayerControllerComponent
+            // As soon as we find one, we break
+
             for (auto entity : world->getEntities())
             {
                 controller = entity->getComponent<FreePlayerControllerComponent>();
@@ -69,21 +83,11 @@ namespace our
                 }
 
                 auto bullet_color = &dynamic_cast<TintedMaterial *>(bullet->getComponent<MeshRendererComponent>()->material)->tint;
-                if (color == 0)
-                {
-                    *bullet_color = {0, 1, 0, 1};
-                    color = 1;
-                }
-                else if (color == 1)
-                {
-                    *bullet_color = {0, 0, 1, 1};
-                    color = 2;
-                }
-                else if (color == 2)
-                {
-                    *bullet_color = {1, 0, 0, 1};
-                    color = 0;
-                }
+                *bullet_color = {0, 0, 0, 0};
+
+                color = (color + 1) % COLORS_COUNT;
+                *bullet_color = COLORS[color];
+
                 wait = deltaTime;
             }
         }
