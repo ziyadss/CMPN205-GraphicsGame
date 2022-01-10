@@ -45,6 +45,7 @@ class PlayState : public our::State
         if (won)
         {
             std::cout << "WON!" << std::endl;
+            // getApp()->changeState("menu");
         }
 
         // And finally we use the renderer system to draw the scene

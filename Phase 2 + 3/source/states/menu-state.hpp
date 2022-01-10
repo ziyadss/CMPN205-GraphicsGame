@@ -24,9 +24,11 @@ class MenuState : public our::State
     void onDraw(double deltaTime) override
     {
         playerController.update(&world, (float)deltaTime);
-
-        auto size = getApp()->getFrameBufferSize();
-        renderer.render(&world, glm::ivec2(0, 0), size);
+        for (auto &entity : world.getEntities())
+        {
+        }
+        // auto size = getApp()->getFrameBufferSize();
+        // renderer.render(&world, glm::ivec2(0, 0), size);
     }
 
     void onDestroy() override
