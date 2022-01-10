@@ -44,6 +44,15 @@
           },
           "tint": [0.45, 0.4, 0.5, 1]
         },
+        "bullet": {
+          "type": "tinted",
+          "shader": "tinted",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "tint": [1, 0, 0, 1]
+        },
         "red": {
           "type": "tinted",
           "shader": "tinted",
@@ -169,10 +178,10 @@
               {
                 "type": "Mesh Renderer",
                 "mesh": "sphere",
-                "material": "red"
+                "material": "bullet"
               },
               { "type": "Collider", "position": [0, 0, 0], "length": 1 },
-              { "type": "Free Player Controller", "bulletSpeed": 0},
+              { "type": "Free Player Controller", "bulletSpeed": 0 },
               {
                 "type": "Movement",
                 "linearVelocity": [0, 0, 0],

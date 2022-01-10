@@ -53,6 +53,7 @@ namespace our
                         movement->linearVelocity = {0, 0, 0};
                         bullet->getOwner()->localTransform.position = {1, -1, -1};
                     }
+
                 for (auto wall : walls)
                     if (checkCollision(bullet, wall))
                     {
@@ -60,6 +61,7 @@ namespace our
                         movement->linearVelocity = {0, 0, 0};
                         bullet->getOwner()->localTransform.position = {1, -1, -1};
                     }
+
                 glm::vec3 bulletCenter = bullet->position + glm::vec3(bullet->getOwner()->getLocalToWorldMatrix() * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
                 if (bulletCenter.x > 11 || bulletCenter.x < -11 || bulletCenter.y > 11 || bulletCenter.y < -11 || bulletCenter.z > 11 || bulletCenter.z < -11)
                 {

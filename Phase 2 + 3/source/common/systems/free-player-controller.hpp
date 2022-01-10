@@ -33,6 +33,7 @@ namespace our
         {
             FreePlayerControllerComponent *controller = nullptr;
             Entity *bullet = nullptr;
+            
             // First of all, we search for an entity containing both a PlayerComponent and a FreePlayerControllerComponent
             // As soon as we find one, we break
             if (wait > 0)
@@ -58,6 +59,7 @@ namespace our
                 MovementComponent *bulletMovement = bullet->getComponent<MovementComponent>();
                 bulletMovement->linearVelocity = {0, 0, -10};
             }
+
             if (app->getKeyboard().isPressed(GLFW_KEY_C))
             {
                 if (wait > 0 && wait < interval)
@@ -65,24 +67,24 @@ namespace our
                     wait += deltaTime; // so that the keyboard press is read as one press only
                     return;
                 }
-                wait = 0;
-                MeshRendererComponent *Mesh = bullet->getComponent<MeshRendererComponent>();
+
+                auto bullet_color = &dynamic_cast<TintedMaterial *>(bullet->getComponent<MeshRendererComponent>()->material)->tint;
                 if (color == 0)
                 {
-                    Mesh->material = AssetLoader<Material>::get("green");
+                    *bullet_color = {0, 1, 0, 1};
                     color = 1;
                 }
                 else if (color == 1)
                 {
-                    Mesh->material = AssetLoader<Material>::get("blue");
+                    *bullet_color = {0, 0, 1, 1};
                     color = 2;
                 }
                 else if (color == 2)
                 {
-                    Mesh->material = AssetLoader<Material>::get("red");
+                    *bullet_color = {1, 0, 0, 1};
                     color = 0;
                 }
-                wait += deltaTime;
+                wait = deltaTime;
             }
         }
     };
