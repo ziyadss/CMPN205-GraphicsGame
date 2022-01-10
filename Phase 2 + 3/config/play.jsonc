@@ -2,7 +2,7 @@
   "start-scene": "main",
   "window": {
     "title": "Default Game Window",
-    "size": { "width": 1280, "height": 720 },
+    "size": { "width": 960, "height": 540 },
     "fullscreen": false
   },
   "scene": {
@@ -22,19 +22,31 @@
         "grass": "assets/textures/grass_ground_d.jpg",
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
-        "monkey": "assets/textures/monkey.png"
+        "monkey": "assets/textures/monkey.png",
+        "girl": "assets/textures/anime_girl.png"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
         "monkey": "assets/models/monkey.obj",
         "plane": "assets/models/plane.obj",
-        "sphere": "assets/models/sphere.obj"
+        "sphere": "assets/models/sphere.obj",
+        "girl": "assets/models/anime_girl.obj"
       },
       "samplers": {
         "default": {},
         "pixelated": { "MAG_FILTER": "GL_NEAREST" }
       },
       "materials": {
+        "girl": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "texture": "girl",
+          "sampler": "default"
+        },
         "metal": {
           "type": "tinted",
           "shader": "tinted",
@@ -170,7 +182,7 @@
         ],
         "children": [
           {
-            "position": [1, -1, -1],
+            "position": [0, -1, -2],
             "rotation": [45, 45, 0],
             "scale": [0.1, 0.1, 0.1],
             "name": "bullet",
@@ -181,12 +193,15 @@
                 "material": "bullet"
               },
               { "type": "Collider", "position": [0, 0, 0], "length": 1 },
-              { "type": "Free Player Controller", "bulletSpeed": 0 },
-              {
-                "type": "Movement",
-                "linearVelocity": [0, 0, 0],
-                "angularVelocity": [0, 0, 0]
-              }
+              { "type": "Movement", "linearVelocity": [0, 0, 0] }
+            ]
+          },
+          {
+            "position": [-0.2, -1, -1],
+            "rotation": [-10, 180, 0],
+            "scale": [0.2, 0.2, 0.2],
+            "components": [
+              { "type": "Mesh Renderer", "mesh": "girl", "material": "girl" }
             ]
           }
         ]
