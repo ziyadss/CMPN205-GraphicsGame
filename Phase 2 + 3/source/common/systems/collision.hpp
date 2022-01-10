@@ -18,12 +18,10 @@ namespace our
     public:
         // This should be called every frame to update all entities containing a ColliderComponent.
 
-
-        void checkCollisioncolor(ColliderComponent bullet, ColliderComponent cube)
+        void checkCollisionColor(ColliderComponent *bullet, ColliderComponent *cube)
         {
             //this function checks that the color of the bullet compnent and the collider component
             //match the necessary logic (i.e are complimentary, or pseudo complimentary for testing)
-            
         }
         void update(World *world, float deltaTime)
         {
@@ -48,9 +46,9 @@ namespace our
                         MeshRendererComponent *Mesh = cube->getOwner()->getComponent<MeshRendererComponent>();
 
                         //this should check the color of the colliders first
-                        //(bad implementation) iterate through all assets -->  
+                        //(bad implementation) iterate through all assets -->
                         if (bullet->getOwner()->getComponent<MeshRendererComponent>()->material == cube->getOwner()->getComponent<MeshRendererComponent>()->material)
-                            checkCollionColor(cube, bullet);
+                            checkCollisionColor(cube, bullet);
                         MovementComponent *movement = bullet->getOwner()->getComponent<MovementComponent>();
                         movement->linearVelocity = {0, 0, 0};
                         bullet->getOwner()->localTransform.position = {1, -1, -1};

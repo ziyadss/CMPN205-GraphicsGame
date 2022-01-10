@@ -96,7 +96,8 @@ namespace our
                       {
                           // Returns true if "first" should be drawn before "second"
                           // We use the dot product of the camera forward vector and the center of the object to find the distance between them
-                          return glm::dot(cameraForward, first.center) > glm::dot(cameraForward, second.center); });
+                          return glm::dot(cameraForward, first.center) > glm::dot(cameraForward, second.center);
+                      });
 
             // Set the OpenGL viewport using viewportStart and viewportSize
             glViewport(viewportStart.x, viewportStart.y, viewportSize.x, viewportSize.y);
