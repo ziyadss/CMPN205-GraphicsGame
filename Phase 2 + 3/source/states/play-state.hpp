@@ -40,7 +40,12 @@ class PlayState : public our::State
         // Here, we just run a bunch of systems to control the world logic
         movementSystem.update(&world, (float)deltaTime);
         playerController.update(&world, (float)deltaTime);
-        collisionSystem.update(&world, (float)deltaTime);
+        bool won = collisionSystem.update(&world, (float)deltaTime);
+
+        if (won)
+        {
+            std::cout << "WON!" << std::endl;
+        }
 
         // And finally we use the renderer system to draw the scene
         auto size = getApp()->getFrameBufferSize();

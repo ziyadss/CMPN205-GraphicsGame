@@ -33,7 +33,7 @@ namespace our
 
             // missing: necessary bullet logic (destroy or return)
         }
-        void update(World *world, float deltaTime)
+        bool update(World *world, float deltaTime)
         {
             bullets.clear();
             cubes.clear();
@@ -60,7 +60,7 @@ namespace our
 
                         MovementComponent *movement = bullet->getOwner()->getComponent<MovementComponent>();
                         movement->linearVelocity = {0, 0, 0};
-                        bullet->getOwner()->localTransform.position = {1, -1, -1};
+                        bullet->getOwner()->localTransform.position = {0, -1, -2};
                     }
 
                 // for (auto wall : walls)
@@ -68,7 +68,7 @@ namespace our
                 //     {
                 //         MovementComponent *movement = bullet->getOwner()->getComponent<MovementComponent>();
                 //         movement->linearVelocity = {0, 0, 0};
-                //         bullet->getOwner()->localTransform.position = {1, -1, -1};
+                //         bullet->getOwner()->localTransform.position = {0, -1, -2};
                 //     }
 
                 glm::vec3 bulletCenter = bullet->position + glm::vec3(bullet->getOwner()->getLocalToWorldMatrix() * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -77,11 +77,13 @@ namespace our
                 {
                     MovementComponent *movement = bullet->getOwner()->getComponent<MovementComponent>();
                     movement->linearVelocity = {0, 0, 0};
-                    bullet->getOwner()->localTransform.position = {1, -1, -1};
+                    bullet->getOwner()->localTransform.position = {0, -1, -2};
                 }
             }
 
             world->deleteMarkedEntities();
+
+            return cubes.empty();
         }
 
         bool checkCollision(ColliderComponent *bulletComponent, ColliderComponent *cubeComponent)
