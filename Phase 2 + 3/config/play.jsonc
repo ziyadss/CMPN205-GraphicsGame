@@ -172,7 +172,7 @@
                 "material": "red"
               },
               { "type": "Collider", "position": [0, 0, 0], "length": 1 },
-              { "type": "Free player Controller", "bulletSpeed": 0},
+              { "type": "Free Player Controller", "bulletSpeed": 0},
               {
                 "type": "Movement",
                 "linearVelocity": [0, 0, 0],
