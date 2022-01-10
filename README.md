@@ -2,7 +2,7 @@
 
 Computer Graphics Project - third year CUFE students.
 
-Currently in phase 1.
+Currently in phase 3.
 
 TODO: Add project description here.
 
