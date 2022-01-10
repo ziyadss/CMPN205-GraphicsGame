@@ -13,14 +13,16 @@
 #include <glm/trigonometric.hpp>
 #include <glm/gtx/fast_trigonometry.hpp>
 
-const int COLORS_COUNT = 6;
+const int COLORS_COUNT = 8;
 const glm::vec4 COLORS[COLORS_COUNT] = {
+    glm::vec4(0.0f, 0.0f, 0.0f, 1.0f), // black
     glm::vec4(1.0f, 0.0f, 0.0f, 1.0f), // red
     glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), // green
     glm::vec4(0.0f, 0.0f, 1.0f, 1.0f), // blue
     glm::vec4(1.0f, 1.0f, 0.0f, 1.0f), // yellow
     glm::vec4(1.0f, 0.0f, 1.0f, 1.0f), // magenta
     glm::vec4(0.0f, 1.0f, 1.0f, 1.0f), // cyan
+    glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)  // white
 };
 
 namespace our
