@@ -2,7 +2,7 @@
   "start-scene": "main",
   "window": {
     "title": "Default Game Window",
-    "size": { "width": 1280, "height": 720 },
+    "size": { "width": 960, "height": 540 },
     "fullscreen": false
   },
   "scene": {
@@ -181,7 +181,7 @@
                 "material": "bullet"
               },
               { "type": "Collider", "position": [0, 0, 0], "length": 1 },
-              { "type": "Free Player Controller", "bulletSpeed": 0 },
+              { "type": "Free Player Controller" },
               {
                 "type": "Movement",
                 "linearVelocity": [0, 0, 0],
