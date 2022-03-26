@@ -1,9 +1,9 @@
 {
   "start-scene": "main",
   "window": {
-    "title": "Default Game Window",
-    "size": { "width": 1280, "height": 720 },
-    "fullscreen": false
+    "title": "FARBEN",
+    "size": { "width": 1366, "height": 768 },
+    "fullscreen": true
   },
   "scene": {
     "assets": {
@@ -15,6 +15,10 @@
         "textured": {
           "vs": "assets/shaders/textured.vert",
           "fs": "assets/shaders/textured.frag"
+        },
+        "lit": {
+          "vs": "assets/shaders/lit.vert",
+          "fs": "assets/shaders/lit.frag"
         }
       },
       "textures": {
@@ -22,19 +26,31 @@
         "grass": "assets/textures/grass_ground_d.jpg",
         "wood": "assets/textures/wood.jpg",
         "glass": "assets/textures/glass-panels.png",
-        "monkey": "assets/textures/monkey.png"
+        "monkey": "assets/textures/monkey.png",
+        "girl": "assets/textures/anime_girl.png"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
         "monkey": "assets/models/monkey.obj",
         "plane": "assets/models/plane.obj",
-        "sphere": "assets/models/sphere.obj"
+        "sphere": "assets/models/sphere.obj",
+        "girl": "assets/models/anime_girl.obj"
       },
       "samplers": {
         "default": {},
         "pixelated": { "MAG_FILTER": "GL_NEAREST" }
       },
       "materials": {
+        "girl": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "texture": "girl",
+          "sampler": "default"
+        },
         "metal": {
           "type": "tinted",
           "shader": "tinted",
@@ -43,6 +59,15 @@
             "depthTesting": { "enabled": true }
           },
           "tint": [0.45, 0.4, 0.5, 1]
+        },
+        "bullet": {
+          "type": "tinted",
+          "shader": "tinted",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "tint": [1, 0, 0, 1]
         },
         "red": {
           "type": "tinted",
@@ -104,14 +129,64 @@
     },
     "world": [
       {
+        "position": [0, 10, 0],
+        "rotation": [0, 0, 0],
+        "scale": [10, 0.02, 10],
+        "name": "wall",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
+        "position": [-10, 0, 0],
+        "rotation": [0, 90, 0],
+        "scale": [10, 10, 0.02],
+        "name": "wall",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
+        "position": [10, 0, 0],
+        "rotation": [0, 90, 0],
+        "scale": [10, 10, 0.02],
+        "name": "wall",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
         "position": [0, 0, 10],
+        "rotation": [90, 0, 0],
+        "scale": [10, 0.02, 10],
+        "name": "wall",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
+        "position": [0, 0, -10],
+        "rotation": [90, 0, 0],
+        "scale": [10, 0.02, 10],
+        "name": "wall",
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "cube", "material": "grey" },
+          { "type": "Collider", "position": [0, 0, 0], "length": 1 }
+        ]
+      },
+      {
+        "position": [0, 0, 9.8],
         "components": [
           { "type": "Camera" },
           { "type": "Free Camera Controller" }
         ],
         "children": [
           {
-            "position": [1, -1, -1],
+            "position": [0, -1, -2],
             "rotation": [45, 45, 0],
             "scale": [0.1, 0.1, 0.1],
             "name": "bullet",
@@ -119,14 +194,18 @@
               {
                 "type": "Mesh Renderer",
                 "mesh": "sphere",
-                "material": "metal"
+                "material": "bullet"
               },
               { "type": "Collider", "position": [0, 0, 0], "length": 1 },
-              {
-                "type": "Movement",
-                "linearVelocity": [0, 0, 0],
-                "angularVelocity": [0, 0, 0]
-              }
+              { "type": "Movement", "linearVelocity": [0, 0, 0] }
+            ]
+          },
+          {
+            "position": [-0.2, -1, -1],
+            "rotation": [-10, 180, 0],
+            "scale": [0.2, 0.2, 0.2],
+            "components": [
+              { "type": "Mesh Renderer", "mesh": "girl", "material": "girl" }
             ]
           }
         ]

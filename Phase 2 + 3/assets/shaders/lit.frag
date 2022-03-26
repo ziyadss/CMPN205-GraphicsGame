@@ -78,7 +78,9 @@ void main(){
     vec3 normal = normalize(fs_in.normal);
     vec3 view = normalize(fs_in.view);
 
-    vec3 ambient = sampled.ambient * (normal.y > 0 ? mix(sky_light.sky, sky_light.horizon, normal.y) : mix(sky_light.horizon, sky_light.ground, -normal.y));
+    vec3 ambient = sampled.ambient * (normal.y > 0 ?
+    mix(sky_light.horizon, sky_light.sky, normal.y) :
+    mix(sky_light.horizon, sky_light.ground, -normal.y));
 
     vec3 accumulated_light = sampled.emissive + ambient;
 

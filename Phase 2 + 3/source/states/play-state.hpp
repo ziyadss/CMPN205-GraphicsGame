@@ -5,6 +5,7 @@
 #include <ecs/world.hpp>
 #include <systems/forward-renderer.hpp>
 #include <systems/free-camera-controller.hpp>
+#include <systems/player-controller.hpp>
 #include <systems/movement.hpp>
 #include <systems/collision.hpp>
 #include <asset-loader.hpp>
@@ -15,9 +16,9 @@ class PlayState : public our::State
 
     our::World world;
     our::ForwardRenderer renderer;
-    our::FreeCameraControllerSystem cameraController;
     our::MovementSystem movementSystem;
     our::CollisionSystem collisionSystem;
+    our::PlayerControllerSystem playerController;
 
     void onInitialize() override
     {
@@ -30,16 +31,23 @@ class PlayState : public our::State
         if (config.contains("world"))
             world.deserialize(config["world"]);
 
-        // We initialize the camera controller system since it needs a pointer to the app
-        cameraController.enter(getApp());
+        // We initialize the player controller system since it needs a pointer to the app
+        playerController.enter(getApp());
     }
 
     void onDraw(double deltaTime) override
     {
         // Here, we just run a bunch of systems to control the world logic
         movementSystem.update(&world, (float)deltaTime);
-        cameraController.update(&world, (float)deltaTime);
-        collisionSystem.update(&world, (float)deltaTime);
+        playerController.update(&world, (float)deltaTime);
+        bool won = collisionSystem.update(&world, (float)deltaTime);
+
+        if (won)
+        {
+            std::cout << "WON!" << std::endl;
+            // getApp()->changeState("menu");
+        }
+
         // And finally we use the renderer system to draw the scene
         auto size = getApp()->getFrameBufferSize();
         renderer.render(&world, glm::ivec2(0, 0), size);
@@ -48,7 +56,7 @@ class PlayState : public our::State
     void onDestroy() override
     {
         // On exit, we call exit for the camera controller system to make sure that the mouse is unlocked
-        cameraController.exit();
+        playerController.exit();
         // and we delete all the loaded assets to free memory on the RAM and the VRAM
         our::clearAllAssets();
     }

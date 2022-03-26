@@ -16,6 +16,7 @@
 #include "states/material-test-state.hpp"
 #include "states/entity-test-state.hpp"
 #include "states/renderer-test-state.hpp"
+#include "states/menu-state.hpp"
 
 int main(int argc, char **argv)
 {

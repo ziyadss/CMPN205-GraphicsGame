@@ -19,6 +19,10 @@
         "lit": {
           "vs": "assets/shaders/lit.vert",
           "fs": "assets/shaders/lit.frag"
+        },
+        "sky": {
+          "vs": "assets/shaders/sky_box.vert",
+          "fs": "assets/shaders/sky_box.frag"
         }
       },
       "textures": {
@@ -30,19 +34,30 @@
         "monkey_ambient": "assets/textures/lit_monkey/ambient_occlusion.jpg",
         "monkey_roughness": "assets/textures/lit_monkey/roughness.jpg",
         "monkey_specular": "assets/textures/lit_monkey/specular.jpg",
-        "monkey_emissive": "assets/textures/lit_monkey/emissive.jpg"
+        "monkey_emissive": "assets/textures/lit_monkey/emissive.jpg",
+        "girl": "assets/textures/anime_girl.png"
       },
       "meshes": {
         "cube": "assets/models/cube.obj",
         "monkey": "assets/models/monkey.obj",
         "plane": "assets/models/plane.obj",
-        "sphere": "assets/models/sphere.obj"
+        "sphere": "assets/models/sphere.obj",
+        "sky": "assets/models/sphere.obj",
+        "girl": "assets/models/anime_girl.obj"
       },
       "samplers": {
         "default": {},
         "pixelated": { "MAG_FILTER": "GL_NEAREST" }
       },
       "materials": {
+        "sky": {
+          "type": "material",
+          "shader": "sky",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          }
+        },
         "metal": {
           "type": "tinted",
           "shader": "tinted",
@@ -51,6 +66,16 @@
             "depthTesting": { "enabled": true }
           },
           "tint": [0.45, 0.4, 0.5, 1]
+        },
+        "girl": {
+          "type": "textured",
+          "shader": "textured",
+          "pipelineState": {
+            "faceCulling": { "enabled": false },
+            "depthTesting": { "enabled": true }
+          },
+          "texture": "girl",
+          "sampler": "default"
         },
         "glass": {
           "type": "textured",
@@ -117,13 +142,21 @@
         ],
         "children": [
           {
-            "position": [1, -1, -1],
-            "rotation": [45, 45, 0],
-            "scale": [0.1, 0.1, 1.0],
+            "position": [-0.2, -1, -1],
+            "rotation": [-10, 180, 0],
+            "scale": [0.2, 0.2, 0.2],
             "components": [
-              { "type": "Mesh Renderer", "mesh": "cube", "material": "metal" }
+              { "type": "Mesh Renderer", "mesh": "girl", "material": "girl" }
             ]
           }
+        ]
+      },
+      {
+        "position": [0, -1, 5],
+        "rotation": [0, 180, 0],
+        "scale": [0.2, 0.2, 0.2],
+        "components": [
+          { "type": "Mesh Renderer", "mesh": "girl", "material": "girl" }
         ]
       },
       {
@@ -157,25 +190,19 @@
         ]
       },
       {
-        "position": [2, 1, 0],
-        "rotation": [0, 90, 0],
-        "scale": [2, 2, 2],
-        "components": [
-          { "type": "Mesh Renderer", "mesh": "plane", "material": "glass" }
-        ]
-      },
-      {
         "position": [0, 10, 0],
         "rotation": [45, 45, 0],
         "scale": [5, 5, 5],
         "components": [
-          { "type": "Mesh Renderer", "mesh": "sphere", "material": "moon" },
+          // { "type": "Mesh Renderer", "mesh": "sphere", "material": "moon" },
           { "type": "Movement", "angularVelocity": [0, 90, 0] },
           {
             "type": "SkyLight",
-            "sky": [0.25, 0.3, 0.5],
-            "horizon": [0.35, 0.35, 0.4],
-            "ground": [0.25, 0.25, 0.25]
+            "mesh": "sky",
+            "material": "sky",
+            "sky": [1.0, 0.0, 0.0],
+            "horizon": [0.5, 0.5, 0.0],
+            "ground": [0.0, 1.0, 0.0]
           }
         ]
       }

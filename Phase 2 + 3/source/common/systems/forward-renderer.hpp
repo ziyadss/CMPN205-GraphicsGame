@@ -116,6 +116,13 @@ namespace our
             // glm::vec3 cameraPosition = V * glm::vec4(0, 0, 0, 1);
             glm::vec3 cameraPosiiton = camera->getOwner()->getLocalToWorldMatrix() * glm::vec4(0, 0, 0, 1);
 
+            // skyLight->material->setup();
+            // skyLight->material->shader->set("sky_light.sky", skyLight->sky);
+            // skyLight->material->shader->set("sky_light.horizon", skyLight->horizon);
+            // skyLight->material->shader->set("sky_light.ground", skyLight->ground);
+            // skyLight->material->shader->set("exposure", 1.0f);
+            // skyLight->mesh->draw();
+
             // Draw all the opaque commands followed by all the transparent commands
             // Don't forget to set the "transform" uniform to be equal the model-view-projection matrix for each render command
             std::vector<RenderCommand> commands(opaqueCommands);
