@@ -2,9 +2,10 @@
 
 Computer Graphics Project - third year CUFE students.
 
-Currently in phase 3.
-
-TODO: Add project description here.
+This project consisted of three phases:
+  - Getting familiar with loading and using OpenGL and GLSL shaders.
+  - Implementing meshes, textures, samplers, lights, and more, as shown in the [phase 2 + 3 document](https://github.com/ziyadss/CMPN205-GraphicsGame/blob/main/Phase%202%20%2B%203/instructions.pdf).
+  - Proof-of-concept of a game where you have to shoot colored blocks with their complement-colored bullets in order to remove them from the world, with the game world being loaded from an external JSON file.
 
 ## Included Libraries
 
